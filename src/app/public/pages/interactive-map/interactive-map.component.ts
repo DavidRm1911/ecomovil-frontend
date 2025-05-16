@@ -24,10 +24,8 @@ export class InteractiveMapComponent implements OnInit {
   private router: Router = inject(Router);
 
 
-  markers: Array<{ position: google.maps.LatLngLiteral }> = [];
 
   ngOnInit() {
-    this.addMarkerAtPosition(-12.098089934437155, -77.05815168994613);
     this.loadMarkers();
 
   }
@@ -40,31 +38,22 @@ export class InteractiveMapComponent implements OnInit {
     this.display = event.latLng!.toJSON();
   }
 
-  addMarker(event: google.maps.MapMouseEvent) {
-    if (event.latLng) {
-      const newMarker = {
-        position: event.latLng.toJSON()
-      };
-      this.markers.push(newMarker);
-    }
-  }
+  markers: Array<{ position: google.maps.LatLngLiteral, vehicleId: number }> = [];
 
-  addMarkerAtPosition(lat: number, lng: number) {
-    const newMarker = {
-      position: { lat, lng }
-    };
-    this.markers.push(newMarker);
-  }
-
-  markerClick() {
-    this.router.navigate(['/myVehicles']); // Redirige a /myVehicles sin parámetros
+  addMarkerAtPosition(lat: number, lng: number, vehicleId: number) {
+    this.markers.push({ position: { lat, lng }, vehicleId });
   }
 
   private loadMarkers() {
     this.vehicleService.getAll().subscribe((response: Vehicle[]) => {
-      response.forEach((vehicle: Vehicle) => {
-        this.addMarkerAtPosition(vehicle.lat, vehicle.lng);
+      this.vehicleData = response;
+      response.forEach(vehicle => {
+        this.addMarkerAtPosition(vehicle.lat, vehicle.lng, vehicle.id);
       });
     });
+  }
+
+  markerClick(vehicleId: number) {
+    this.router.navigate(['/vehicleDetailsAcquirer', vehicleId]);
   }
 }

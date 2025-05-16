@@ -26,7 +26,7 @@ import {RegisterAcquirerComponent} from './public/pages/register-acquirer/regist
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  title = 'EcoMovil';
+  title = 'VerdeRuta';
   menuOpen = false;
 
   constructor(private router: Router, private translate: TranslateService) {
