@@ -1,0 +1,135 @@
+<section id="vehiclesSection">
+  <app-header></app-header>
+
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-28 py-6 flex-wrap items-center justify-between">
+    <div class="container mr-auto px-4.5 py-4.5 flex-wrap items-center justify-between">
+      <h1 class="text-4xl mr-auto font-bold text-customGreen">{{ 'post_details' | translate }}</h1>
+    </div>
+    <div class="container mr-auto px-4.5 py-6 flex items-center justify-between">
+      <p>{{ 'provide_information' | translate }}</p>
+    </div>
+
+    <form  #vehicleForm="ngForm">
+      <div class=" gap-6 border-2 mr-auto px-10 py-9">
+
+        <!-- Campo Name -->
+        <div class="flex flex-col">
+          <label for="name" class="text-black-alpha-10 font-medium mb-2">Name</label>
+          <input
+            id="name"
+            name="name"
+            [(ngModel)]="newVehicle.name"
+            #name="ngModel"
+            required
+            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <div *ngIf="name.invalid && name.touched" class="text-red-500 text-sm mt-1">
+            Name is required
+          </div>
+        </div>
+
+        <!-- Campo Type -->
+        <div class="flex flex-col">
+          <label for="type" class="text-black-alpha-10 font-medium mb-2">{{ 'vehicle_type' | translate }}</label>
+          <select
+            id="type"
+            name="type"
+            [(ngModel)]="newVehicle.type"
+            #type="ngModel"
+            required
+            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            <option value="" disabled selected>Select a type</option>
+            <option value="Bike">Bike</option>
+            <option value="rollskater">rollskater</option>
+            <option value="monopatin">monopatin</option>
+          </select>
+          <div *ngIf="type.invalid && type.touched" class="text-red-500 text-sm mt-1">
+            Type is required
+          </div>
+        </div>
+
+        <!-- Campo Year -->
+        <div class="flex flex-col">
+          <label for="year" class="text-black font-medium mb-2">{{ 'year' | translate }}</label>
+          <input
+            id="year"
+            name="year"
+            type="number"
+            [(ngModel)]="newVehicle.year"
+            #year="ngModel"
+            required
+            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <div *ngIf="year.invalid && year.touched" class="text-red-500 text-sm mt-1">
+            Year is required
+          </div>
+        </div>
+
+        <!-- Campo Price -->
+        <div class="flex flex-col">
+          <!-- {{ 'edit_profile' | translate }} -->
+          <label for="price" class="text-black font-medium mb-2">{{ 'price' | translate }}</label>
+          <input
+            id="price"
+            name="price"
+            type="number"
+            [(ngModel)]="newVehicle.priceSell"
+            #price="ngModel"
+            required
+            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <div *ngIf="price.invalid && price.touched" class="text-red-500 text-sm mt-1">
+            Price is required
+          </div>
+        </div>
+
+        <!-- Campo Rental Prince -->
+        <div class="flex flex-col">
+          <!-- {{ 'edit_profile' | translate }} -->
+          <label for="rentalPrice" class="text-black-alpha-10 font-medium mb-2">{{ 'rental_price' | translate }}</label>
+          <input
+            id="rentalPrice"
+            name="rentalPrice"
+            type="number"
+            [(ngModel)]="newVehicle.priceRent"
+            #rentalPrice="ngModel"
+            required
+            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <div *ngIf="rentalPrice.invalid && rentalPrice.touched" class="text-red-500 text-sm mt-1">
+            Rental Price is required
+          </div>
+        </div>
+
+        <!-- Campo Description -->
+        <div class="flex flex-col">
+          <label for="description" class="text-black font-medium mb-2">{{ 'description' | translate }}</label>
+          <textarea
+            id="description"
+            name="description"
+            [(ngModel)]="newVehicle.description"
+            #description="ngModel"
+            required
+            rows="4"
+            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          ></textarea>
+          <div *ngIf="description.invalid && description.touched" class="text-red-500 text-sm mt-1">
+            Description is required
+          </div>
+        </div>
+
+        <!-- Botón Add incorporated-->
+        <div class="container mr-auto px-4.5 py-6 flex items-center justify-between">
+          <button type="submit" [disabled]="vehicleForm.invalid" class="bg-red-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full" (click)="onClick()">
+            {{ 'save_vehicle' | translate }}
+          </button>
+
+
+        </div>
+      </div>
+    </form>
+  </div>
+
+</section>

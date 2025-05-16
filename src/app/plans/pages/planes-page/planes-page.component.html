@@ -1,0 +1,9 @@
+<app-header></app-header>
+
+<div class = "page page container mx-auto px-4 py-3 flex items-center justify-center">
+  <div class="columna columna-mayor">
+    <div class="title text-4xl mr-auto font-bold text-customGreen"  style="margin-left: 40px; color: #1ACD81"><h2>{{ 'publication_plans' | translate }}</h2></div>
+    <h6  class="componente-h" style="margin-left: 40px; color: #939393">{{ 'choose_plan' | translate }}</h6>
+    <div class="componente"><app-plan-list [planes]="planes"></app-plan-list></div>
+  </div>
+</div>

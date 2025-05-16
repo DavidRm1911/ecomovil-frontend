@@ -1,0 +1,33 @@
+
+
+
+<mat-card class="example-card" appearance="outlined">
+  <mat-card-header class="header">
+    <p style="font-weight: bold" style="font-size: 30px; color:#1ACD81" >{{plan.name}}</p>
+  </mat-card-header>
+  <mat-card-content class="content">
+    <p style="margin-bottom: 40px; color: #939393" >Free per month and then ${{plan.price}}/month</p>
+    @if (Number(plan.postMonth) < 100){
+      <p>{{plan.postMonth}} posts per month</p>
+    } @else {
+      <p>Unlimited posts</p>
+    }
+
+    @if (plan.name != "Graduado"){
+      <p>{{plan.assistanceType}} assistance</p>
+    } @else {
+      <p>{{plan.assistanceType}}</p>
+    }
+
+    @if (plan.featured == true){
+      <p>Featured posts</p>
+    }
+  </mat-card-content>
+  <a class = "boton-example" mat-fab extended routerLink="." (click)="onClick()">
+    Choose Plan
+  </a>
+
+
+</mat-card>
+
+

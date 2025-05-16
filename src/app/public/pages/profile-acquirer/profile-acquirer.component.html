@@ -1,0 +1,37 @@
+<app-header-acquirer></app-header-acquirer>
+<div class="min-h-screen flex flex-col justify-center items-center pt-16">
+  <mat-card class="w-full max-w-3xl shadow-lg p-6">
+    <!-- Encabezado: Toda la parte superior -->
+    <mat-card-header>
+      <mat-card-title class="text-3xl text-customGreen">My Profile</mat-card-title>
+      <mat-card-subtitle class="text-gray-600">Personal information, vehicle details, and RUC.</mat-card-subtitle>
+    </mat-card-header>
+
+    <!-- Contenido: Información a la izquierda y foto a la derecha -->
+    <mat-card-content class="profile-content">
+      <!-- Información del usuario a la izquierda -->
+      <div class="user-info">
+        <h2 class="text-lg font-semibold">Name:</h2>
+        <p>{{ user?.name }}</p>
+
+        <h2 class="text-lg font-semibold mt-4">Email:</h2>
+        <p>{{ user?.email }}</p>
+
+        <h2 class="text-lg font-semibold mt-4">Phone:</h2>
+        <p>{{ user?.phone }}</p>
+      </div>
+
+      <!-- Imagen del usuario a la derecha -->
+      <div class="profile-image">
+        <img mat-card-avatar [src]="getLogoUrl(user?.url)" alt="Profile Picture" class="rounded-full w-48 h-48">
+      </div>
+    </mat-card-content>
+
+    <!-- Acciones: Botón de acción centrado -->
+    <mat-card-actions class="mt-6 flex justify-center">
+      @for (option of options; track option.title){
+        <button [routerLink]="option.path" mat-raised-button class="bg-customGreen hover:bg-green-600 text-white w-full py-2">Edit profile</button>
+      }
+    </mat-card-actions>
+  </mat-card>
+</div>

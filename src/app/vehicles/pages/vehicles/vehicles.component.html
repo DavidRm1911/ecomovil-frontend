@@ -1,0 +1,38 @@
+<section id="vehiclesSection">
+  <app-header></app-header>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-28 py-6 flex-wrap items-center justify-between">
+    <div class="container mr-auto px-4.5 py-4.5 flex-wrap items-center justify-between">
+      <!-- {{ 'my_vehicles' | translate }} -->
+      <h1 class="text-4xl mr-auto font-bold text-customGreen">{{ 'my_vehicles' | translate }}</h1>
+    </div>
+    <div class="container mr-auto px-4.5 py-6 flex items-center justify-between">
+      <!-- {{ 'explore_selection' | translate }} -->
+      <p>{{ 'explore_selection' | translate }}</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let vehicle of vehicleData" class="bg-white shadow-md rounded-lg p-4">
+        <div class="flex flex-col items-center">
+          <span class="text-customGreen font-bold mb-2">{{ vehicle.name }}</span>
+          <img [alt]="vehicle.name"
+               [src]="vehicle.imageUrl"
+               class="w-32 h-32 object-cover rounded-lg"
+               mat-card-image />
+          <div class="mt-2 text-center">
+            <p class="text-gray-500 rounded">{{ vehicle.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+      @for  (option of options; track option.title){
+
+    <div class="container mr-auto px-4.5 py-6 flex items-center justify-between">
+      <button [routerLink]="option.path" class="bg-customGreen hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        <a >Add +</a>
+      </button>
+    </div>
+
+      }
+  </div>
+
+</section>

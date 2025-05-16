@@ -1,0 +1,35 @@
+<div class="card-container">
+  <div class="columnaFor">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <div class="group-label-placeholder" >
+        <label for="name">Name</label>
+        <input id="name" formControlName="name" class="form-control" placeholder="Enter your full names"/>
+        <div [hidden]="profileForm.get('name')?.valid || profileForm.get('name')?.pristine" class="text-red-500 text-sm mt-1">
+          Name is required
+        </div>
+      </div>
+
+      <div class="group-label-placeholder">
+        <label for="email">Email</label>
+        <input id="email"  formControlName="email"  placeholder="name@example.com"/>
+        <div [hidden]="profileForm.get('email')?.valid || profileForm.get('email')?.pristine" class="text-red-500 text-sm mt-1">
+          Email is required
+        </div>
+      </div>
+
+      <div class="group-label-placeholder">
+        <label for="phone">Phone</label>
+        <input id="phone" formControlName="phone" placeholder="+51 123-456-789"/>
+        <div [hidden] = "profileForm.get('phone')?.valid || profileForm.get('phone')?.pristine" class="text-red-500 text-sm mt-1">
+          Phone is required
+        </div>
+      </div>
+
+      <button class="buttonSubmit" type="submit"  [disabled]="profileForm.invalid" >Save Changes</button>
+    </form>
+  </div>
+
+  <div class="columnaImag">
+    <img *ngIf="profile" [src]="profile.image" alt="Profile Image">
+  </div>
+</div>

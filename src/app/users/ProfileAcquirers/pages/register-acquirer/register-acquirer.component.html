@@ -1,0 +1,163 @@
+<div class="flex justify-center items-center h-screen">
+  <div class="bg-white p-8 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-6 text-center text-customGreen">{{ 'welcome' | translate }}</h1>
+    <h2 class="text-center mb-6">{{ 'register_credentials' | translate }}</h2>
+
+    <form>
+      <div class="flex justify-center mb-6">
+        <button
+          class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+          routerLink="/login">
+          {{ 'log_in' | translate }}
+        </button>
+        <button
+          class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2"
+          routerLink="/registerAcquirer">
+          {{ 'register_acquirer' | translate }}
+        </button>
+        <!--
+        <button
+          class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+          routerLink="/registerUniversity">
+          {{ 'register_organization' | translate }}
+        </button>
+        -->
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2">
+          {{ 'name_last' | translate }}
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text"
+          name="username"
+          placeholder="Enter username"
+          [(ngModel)]="form.username"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2">
+          Email
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text"
+          name="email"
+          placeholder="Enter your email"
+          [(ngModel)]="form.email"
+        />
+      </div>
+
+      <div class="mb-6">
+        <label class="block text-gray-700 font-bold mb-2">
+          {{ 'password' | translate }}
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          type="password"
+          name="password"
+          placeholder="Enter your password"
+          [(ngModel)]="form.password"
+        />
+      </div>
+
+      <div class="flex items-center mb-6">
+        <input
+          id="terms"
+          type="checkbox"
+          class="form-checkbox h-5 w-5 text-green-500"
+          [(ngModel)]="termsAccepted"
+          name="terms"
+        />
+        <label for="terms" class="ml-2 text-gray-700">
+          {{ 'read_accept' | translate }}
+          <a href="#" (click)="openTermsModal(); $event.preventDefault()"  class="text-green-500 hover:text-green-700">{{ 'terms_conditions' | translate }}</a>
+          and
+          <a href="#" class="text-green-500 hover:text-green-700">{{ 'privacy_policy' | translate }}</a>
+        </label>
+
+        <div
+          *ngIf="showTermsModal"
+          class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
+        >
+          <div class="bg-white p-6 rounded-lg shadow-lg max-w-xl w-full relative">
+            <h2 class="text-xl font-bold mb-4 text-center">Términos y Condiciones</h2>
+            <div class="max-h-64 overflow-y-auto text-sm text-gray-700">
+              <p class="text-center mb-4">
+                <strong>Última actualización: 01 de octubre de 2023</strong>
+              <p>
+                Bienvenido a <strong>EcoMovil</strong>, una aplicación orientada a facilitar el acceso a vehículos ecológicos como bicicletas, scooters y otros medios de transporte sostenible. Al registrarte y utilizar la aplicación, aceptas cumplir con los siguientes Términos y Condiciones:
+                <br /><br />
+
+                <strong>1. Aceptación de los Términos</strong><br />
+                El uso de la plataforma EcoMovil implica la aceptación plena y sin reservas de estos Términos y Condiciones. Si no estás de acuerdo con alguno de ellos, por favor no utilices nuestros servicios.
+                <br /><br />
+
+                <strong>2. Registro de Usuario</strong><br />
+                Para acceder a ciertas funcionalidades, deberás registrarte proporcionando información veraz y actualizada. Te comprometes a mantener la confidencialidad de tus credenciales y a notificar cualquier uso no autorizado.
+                <br /><br />
+
+                <strong>3. Uso de la Plataforma</strong><br />
+                EcoMovil proporciona un entorno para el registro, búsqueda y solicitud de vehículos no contaminantes. Está prohibido:
+              <ul class="list-disc pl-5">
+                <li>Usar la app para fines ilegales o fraudulentos.</li>
+                <li>Compartir cuentas entre múltiples usuarios.</li>
+                <li>Manipular el sistema con información falsa.</li>
+              </ul>
+              <br />
+
+              <strong>4. Propiedad Intelectual</strong><br />
+              Todos los contenidos, diseños, marcas y funcionalidades de EcoMovil son propiedad de la empresa desarrolladora. Queda prohibida su reproducción o distribución sin autorización expresa.
+              <br /><br />
+
+              <strong>5. Protección de Datos</strong><br />
+              Tus datos personales serán tratados conforme a nuestra <em>Política de Privacidad</em>, respetando las leyes vigentes en materia de protección de datos.
+              <br /><br />
+
+              <strong>6. Responsabilidades</strong><br />
+              EcoMovil no se hace responsable por:
+              <ul class="list-disc pl-5">
+                <li>Daños o perjuicios derivados del uso incorrecto de la app.</li>
+                <li>Errores técnicos, interrupciones del servicio o pérdida de información.</li>
+                <li>Conducta de terceros (usuarios o proveedores).</li>
+              </ul>
+              <br />
+
+              <strong>7. Modificaciones</strong><br />
+              Nos reservamos el derecho de modificar los presentes Términos en cualquier momento. Te notificaremos sobre cambios importantes mediante la aplicación o por correo electrónico.
+              <br /><br />
+
+              <strong>8. Legislación Aplicable</strong><br />
+              Estos términos se rigen por las leyes vigentes en la República del Perú. Cualquier disputa será resuelta ante los tribunales competentes de Lima Metropolitana.
+              <br /><br />
+
+              <strong>9. Contacto</strong><br />
+              Para cualquier duda o reclamo, puedes comunicarte con nosotros a través de:<br />
+              📧 <a href="mailto:soporte@ecomovil.pe" class="text-green-600 underline">soporte&#64;ecomovil.pe</a>
+
+
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button
+                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                (click)="closeTermsModal()"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center">
+        <button
+          class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          (click)="onSubmit()">
+          {{ 'register_acquirer' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

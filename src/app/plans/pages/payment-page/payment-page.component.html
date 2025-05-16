@@ -1,0 +1,13 @@
+
+<div class = "page">
+  <div class="columna"></div>
+  <div class="columna columna-mayor">
+    <div class="title" style="color: #1ACD81"><h2> {{ 'proceed_checkout' | translate }}</h2></div>
+    <h6  class="componente-h" >{{ 'review_purchase' | translate }}</h6>
+    <h6  class="componente-h" >{{ 'total_amount' | translate }}: {{this.paymentService.getCost()}} $</h6>
+    <div class="componente"><app-payment></app-payment></div>
+
+  </div>
+</div>
+
+

@@ -1,0 +1,17 @@
+<app-header-acquirer/>
+<div class="page container mx-auto px-4 py-3 items-center justify-center">
+  <div class="componente">
+    <div class="title text-4xl mr-auto font-bold text-customGreen" style="margin-left: 10px;">
+      <h2>Edit profile</h2>
+    </div>
+    <h6 class="componente-h" style="margin-left: 10px; color: #939393;">
+      Personal information and purchases or rental preferences.
+    </h6>
+
+    <div>
+      <app-profile [profile]="user" (profileChange)="userChange($event)"></app-profile>
+    </div>
+  </div>
+</div>
+
+<app-confirmation #confirmation></app-confirmation>

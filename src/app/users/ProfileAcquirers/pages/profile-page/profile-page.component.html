@@ -1,0 +1,18 @@
+<app-header></app-header>
+
+<div class="page container mx-auto px-4 py-3 items-center justify-center">
+  <div class="componente">
+    <div class="title text-4xl mr-auto font-bold text-customGreen" style="margin-left: 10px;">
+      <h2>{{ 'edit_profile' | translate }}</h2>
+    </div>
+    <h6 class="componente-h" style="margin-left: 10px; color: #939393;">
+      {{ 'personal_purchases_rental' | translate }}
+    </h6>
+
+    <div>
+      <app-profile [profile]="user" (profileChange)="userChange($event)"></app-profile>
+    </div>
+  </div>
+</div>
+
+<app-confirmation #confirmation></app-confirmation>

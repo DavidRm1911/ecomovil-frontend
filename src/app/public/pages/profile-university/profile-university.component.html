@@ -1,0 +1,54 @@
+<app-header-acquirer></app-header-acquirer>
+
+<div class="min-h-screen flex flex-col justify-center items-center bg-gray-50 pt-20 px-4">
+  <mat-card class="w-full max-w-4xl shadow-2xl rounded-xl p-8 bg-white">
+    <mat-card-header class="mb-6">
+      <mat-card-title class="text-4xl font-extrabold text-customGreen tracking-tight">
+        {{ 'my_profile' | translate }}
+      </mat-card-title>
+      <mat-card-subtitle class="text-gray-500 text-lg mt-1">
+        {{ 'personal_information' | translate }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <!-- Contenido: Información a la izquierda y foto a la derecha -->
+    <!-- Contenido -->
+    <mat-card-content class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <!-- Información del usuario -->
+      <div class="space-y-4 text-gray-700">
+        <p class="text-lg">
+          <span class="font-semibold">{{ 'name' | translate }}:</span>
+          {{ getFirstName(user.fullName) }}
+        </p>
+        <p class="text-lg">
+          <span class="font-semibold">Email:</span> {{ user.email }}
+        </p>
+        <p *ngIf="user.phoneNumber && user.phoneNumber !== '000000000'" class="text-lg">
+          <span class="font-semibold">{{ 'phone' | translate }}:</span> {{ user.phoneNumber }}
+        </p>
+        <p *ngIf="user.ruc && user.ruc !== '00000000000'" class="text-lg">
+          <span class="font-semibold">RUC:</span> {{ user.ruc }}
+        </p>
+      </div>
+
+      <!-- Imagen del usuario a la derecha -->
+      <!-- Imagen del usuario -->
+      <div class="flex justify-center">
+        <img *ngIf="user?.url"
+             [src]="user?.url"
+             alt="Profile Picture"
+             class="rounded-full w-48 h-48 object-cover shadow-md border-4 border-customGreen" />
+      </div>
+    </mat-card-content>
+
+    <!-- Botones de acción -->
+    <mat-card-actions class="mt-8 flex justify-center">
+      @for (option of options; track option.title) {
+        <button [routerLink]="option.path"
+                mat-raised-button
+                class="bg-customGreen hover:bg-green-600 text-white font-semibold py-2 px-6 rounded transition duration-200">
+          {{ 'edit_profile' | translate }}
+        </button>    }
+    </mat-card-actions>
+  </mat-card>
+</div>

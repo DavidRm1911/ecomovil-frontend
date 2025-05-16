@@ -1,0 +1,46 @@
+<section id="header-section">
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-sm">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+
+      <a class="flex items-center space-x-2" routerLink="#">
+        <img src="./EcomovilLogo.png" class="h-6 w-6 custom-icon">
+        <span class="text-xl font-bold text-green-600">Ecomovil</span>
+      </a>
+
+
+      <nav class="hidden md:flex space-x-6">
+        @for  (option of options; track option.title){
+          <button [routerLink]="option.path" class="text-sm font-medium hover:text-green-600 transition-colors">{{option.title}}</button>
+        }
+
+      </nav>
+
+      <div class="hidden md:flex items-center">
+        <button mat-button [matMenuTriggerFor]="aboveMenu">
+          <img src="./EcomovilLogo.png" class="h-12 w-12 flex-none rounded-full bg-gray-50">
+        </button>
+        <mat-menu #aboveMenu="matMenu" yPosition="above">
+          @for (option of optionsLogin; track option.title){
+            <button mat-menu-item [routerLink]="option.path">{{option.title}}</button>
+          }
+        </mat-menu>
+      </div>
+
+      <div class="md:hidden">
+        <button mat-button [matMenuTriggerFor]="hamburgerMenu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <mat-menu #hamburgerMenu="matMenu" yPosition="above">
+          @for  (option of options; track option.title){
+            <button mat-menu-item [routerLink]="option.path">{{option.title}}</button>
+          }
+          <button mat-menu-item>Sign Up</button>
+          <button mat-menu-item>Settings</button>
+        </mat-menu>
+      </div>
+    </div>
+    <app-language-switcher></app-language-switcher>
+  </header>
+</section>

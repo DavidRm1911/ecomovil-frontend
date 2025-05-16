@@ -1,0 +1,54 @@
+<section id="vehiclesSection">
+  <app-header-acquirer></app-header-acquirer>
+
+  <div class="container mx-auto px-4 sm:px-6 lg:px-28 py-6 flex-wrap items-center justify-between">
+
+    <!-- Filtros -->
+    <div class="flex justify-between items-center mb-6 space-x-4">
+      <mat-form-field appearance="fill" class="w-40">
+        <mat-label>{{ 'vehicle_type' | translate }}</mat-label>
+        <mat-select [(value)]="selectedType" (selectionChange)="onTypeChange($event.value)">
+          <mat-option value="All types">All types</mat-option>
+          <mat-option value="Bike">Bike</mat-option>
+          <mat-option value="rollskater">Rollskater</mat-option>
+          <mat-option value="monopatin">Monopatin</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-48">
+        <mat-label>{{ 'price_order' | translate }}</mat-label>
+        <mat-select [(value)]="selectedPrice" (selectionChange)="onPriceChange($event.value)">
+          <mat-option value="Lowest to Highest">Lowest to Highest</mat-option>
+          <mat-option value="Highest to Lowest">Highest to Lowest</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Vehículos -->
+
+
+    <div *ngIf="vehicleData.length > 0; else noVehicles" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <mat-card *ngFor="let vehicle of vehicleData" class="shadow-lg rounded-lg">
+        <img mat-card-image                [src]="vehicle.imageUrl"
+             [alt]="vehicle.name" class="h-40 object-cover mb-4">
+        <mat-card-content>
+          <h3 class="text-lg font-bold mb-2">{{ vehicle.name }}</h3>
+          <p class="text-gray-600">{{ vehicle.type }}</p>
+          <p class="text-gray-600">{{ vehicle.description }}</p>
+        </mat-card-content>
+        <mat-card-actions class="flex justify-between mt-4">
+          <button [routerLink]="['/vehicleDetailsAcquirer', vehicle.id]" mat-button color="accent">
+            {{ 'view_details' | translate }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <ng-template #noVehicles>
+      <div class="text-center text-gray-500 text-xl mt-10">
+        {{ 'no_vehicles_available' | translate }} :(
+      </div>
+    </ng-template>
+
+  </div>
+</section>
