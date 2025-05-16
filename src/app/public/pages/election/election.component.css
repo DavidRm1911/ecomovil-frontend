@@ -40,3 +40,40 @@ button:last-child {
 button:last-child:hover {
   background-color: #2563eb;
 }
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+  }
+  50% {
+    box-shadow: 0 0 15px #00ffee, 0 0 30px #00ffee;
+  }
+}
+
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+  animation: glow 2s infinite;
+}
+
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #00ffcc, #00ffee, #00ccff, #00ffcc);
+  background-size: 400% 400%;
+  animation: shine 6s linear infinite;
+  z-index: 0;
+  filter: blur(10px);
+  opacity: 0.6;
+  border-radius: inherit;
+}
+
+@keyframes shine {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
