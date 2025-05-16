@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {MatAnchor, MatButton} from "@angular/material/button";
+import {MatButton} from "@angular/material/button";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {RouterLink} from "@angular/router";
 import {LanguageSwitcherComponent} from "../language-switcher/language-switcher.component";
@@ -12,7 +12,6 @@ import {LanguageSwitcherComponent} from "../language-switcher/language-switcher.
     MatMenu,
     MatMenuItem,
     MatMenuTrigger,
-    MatAnchor,
     RouterLink,
     LanguageSwitcherComponent
   ],

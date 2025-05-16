@@ -1,11 +1,9 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {NgIf, NgOptimizedImage} from "@angular/common";
+import {NgIf} from "@angular/common";
 import {LogoApiService} from "../../../shared/services/logo-api.service";
-import { MatCard, MatCardActions, MatCardAvatar, MatCardContent, MatCardHeader, MatCardTitle, MatCardSubtitle } from "@angular/material/card";
+import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle, MatCardSubtitle } from "@angular/material/card";
 import {MatButton} from "@angular/material/button";
-import {MatCheckbox} from "@angular/material/checkbox";
 import {RouterLink} from "@angular/router";
-import {HeaderComponent} from "../../components/header/header.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {UserService} from "../../../auth/services/user.service";
 import {AuthenticationService} from "../../../auth/services/authentication.service";
@@ -17,19 +15,15 @@ import {ProfileApiService} from '../../../users/ProfileAcquirers/services/profil
   standalone: true,
   imports: [
     NgIf,
-    NgOptimizedImage,
     MatCard,
     MatCardHeader,
     MatCardContent,
     MatCardActions,
-    MatCardAvatar,
     MatCardTitle,
     MatCardSubtitle,
     MatButton,
-    MatCheckbox,
     RouterLink,
     TranslateModule,
-    HeaderComponent,
     HeaderAcquirerComponent
   ],
   templateUrl: './profile-university.component.html',

@@ -4,17 +4,15 @@ import {NgForOf} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {TranslateModule} from "@ngx-translate/core";
 import {HeaderAcquirerComponent} from '../../../../public/components/header-acquirer/header-acquirer.component';
-import {HeaderComponent} from '../../../../public/components/header/header.component';
-import {Vehicle} from '../../../../vehicles/model/vehicle.entity';
 import {VehicleService} from '../../../../vehicles/services/vehicle.service';
 import {LogoApiService} from '../../../../shared/services/logo-api.service';
+import {Vehicle} from '../../../../vehicles/model/vehicle.entity';
 
 
 @Component({
   selector: 'app-home-acquirer',
   standalone: true,
     imports: [
-        HeaderComponent,
         MatCardImage,
         NgForOf,
         HeaderAcquirerComponent,

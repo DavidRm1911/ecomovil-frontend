@@ -21,7 +21,6 @@ import {LogoApiService} from '../../../../shared/services/logo-api.service';
     MatSelectModule,
     TranslateModule,
     HeaderAcquirerComponent,
-    HeaderComponent,
     NgIf,
     RouterLink
 

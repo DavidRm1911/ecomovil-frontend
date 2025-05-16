@@ -2,8 +2,6 @@ import {Component, inject, OnInit} from '@angular/core';
 import {NgIf} from "@angular/common";
 import { MatCard, MatCardActions, MatCardAvatar, MatCardContent, MatCardHeader, MatCardTitle, MatCardSubtitle } from "@angular/material/card";
 import {MatButton} from "@angular/material/button";
-import {MatCheckbox} from "@angular/material/checkbox";
-import {RouterLink} from "@angular/router";
 import {TranslateModule} from "@ngx-translate/core";
 import {HeaderAcquirerComponent} from '../../../../public/components/header-acquirer/header-acquirer.component';
 import {UserService} from '../../../../auth/services/user.service';
@@ -23,9 +21,7 @@ import {LogoApiService} from '../../../../shared/services/logo-api.service';
     MatCardTitle,
     MatCardSubtitle,
     MatButton,
-    MatCheckbox,
     TranslateModule,
-    RouterLink,
     HeaderAcquirerComponent,
   ],
   templateUrl: './profile-acquirer.component.html',

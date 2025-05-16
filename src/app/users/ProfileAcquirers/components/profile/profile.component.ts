@@ -1,14 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ReactiveFormsModule, FormGroup, FormControl, Validators} from '@angular/forms';
 import {Profile} from "../../model/profile";
-import {JsonPipe, NgIf} from "@angular/common";
-import {RouterLink} from "@angular/router";
-import {HeaderComponent} from '../../../../public/components/header/header.component';
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, JsonPipe, NgIf, HeaderComponent, RouterLink],
+  imports: [ReactiveFormsModule, NgIf],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
