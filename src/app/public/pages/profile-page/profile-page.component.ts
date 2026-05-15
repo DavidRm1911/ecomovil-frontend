@@ -19,39 +19,56 @@ import {ProfileComponent} from '../../../users/ProfileAcquirers/components/profi
   styleUrl: './profile-page.component.css'
 })
 export class ProfilePageComponent implements OnInit {
-  user: any;
+  user: any = null;
   @ViewChild('confirmation') confirmation!: ConfirmationComponent;
 
   constructor(private profileService: ProfileApiService) { }
 
   ngOnInit(): void {
-    this.profileService.getMyProfile().subscribe(data => {
-      this.user = data;
+    this.profileService.getMyProfile().subscribe({
+      next: (data) => {
+        this.user = data;
+      },
+      error: (err) => {
+        if (err.status === 404) {
+          this.user = { fullName: '', email: '', phoneNumber: '', ruc: '', planId: null };
+        } else {
+          console.error('Error loading profile:', err);
+        }
+      }
     });
   }
 
   userChange(updatedUser: any) {
-    const [firstName, lastName] = updatedUser.fullName.split(' ');
+    const nameParts = (updatedUser.fullName || '').split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || nameParts[0] || '';
 
     const payload = {
-      firstName: firstName || '',
-      lastName: lastName || '',
+      firstName: firstName,
+      lastName: lastName,
       email: updatedUser.email,
       phoneNumber: updatedUser.phoneNumber,
       ruc: updatedUser.ruc,
       planId: updatedUser.planId
     };
 
-    this.profileService.updateProfile(payload)
-      .pipe(take(1))  // <-- toma solo 1 emisión y se auto-cierra
+    const isNewProfile = !this.user?.id;
+
+    const request$ = isNewProfile
+      ? this.profileService.createProfile(payload)
+      : this.profileService.updateProfile(payload);
+
+    request$
+      .pipe(take(1))
       .subscribe({
         next: (data) => {
-          console.log('✅ Perfil actualizado:', data);
+          this.user = data;
           this.confirmation.message = 'Datos actualizados correctamente!';
           this.confirmation.show();
         },
         error: (err) => {
-          console.error('❌ Error al actualizar perfil:', err);
+          console.error('Error al guardar perfil:', err);
         }
       });
   }
