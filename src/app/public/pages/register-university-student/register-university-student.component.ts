@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {TranslateModule} from "@ngx-translate/core";
 import {AuthenticationService} from "../../../auth/services/authentication.service";
 import {SignUpRequest} from "../../../auth/model/sign-up.request";
+import {SignInRequest} from "../../../auth/model/sign-in.request";
 import {FormsModule} from "@angular/forms";
-import {ProfileAccountService} from '../../../users/ProfileAcquirers/services/profile-account.service';
+import {ProfileApiService} from '../../../users/ProfileAcquirers/services/profile-api.service';
 
 @Component({
   selector: 'app-register-university-student',
@@ -23,34 +24,57 @@ export class RegisterUniversityStudentComponent implements OnInit {
     password: '',
     email: '',
     role: [] as string[],
-    ruc: ''
-  }
-
-  profile = {
-    firstName: '',
-    lastName: '',
-    email: '',
+    ruc: '',
     phoneNumber: ''
   }
 
   submitted: boolean = false;
-  constructor(private authenticationService: AuthenticationService, private profileAccountService: ProfileAccountService) { }
+
+  constructor(
+    private authenticationService: AuthenticationService,
+    private profileApiService: ProfileApiService,
+    private router: Router
+  ) { }
+
   ngOnInit(): void {
     this.form.role.push('ROLE_ADMIN');
   }
+
   onSubmit(): void {
-    // if (this.form.invalid) return;
-    let username = this.form.username;
-    let password = this.form.password;
-    let email = this.form.email;
-    let ruc = this.form.ruc;
-    const signUpRequest = new SignUpRequest(username, password, email);
-    this.authenticationService.signUp(signUpRequest);
-    this.profile.firstName=username;
-    this.profile.lastName=username;
-    this.profile.email=email;
-    this.profile.phoneNumber='';
-    this.profileAccountService.addAccount(this.profile);
-    this.submitted = true;
+    const parts = this.form.username.trim().split(' ');
+    const firstName = parts[0] || this.form.username;
+    const lastName = parts.slice(1).join(' ') || parts[0];
+
+    const signUpRequest = new SignUpRequest(this.form.username, this.form.password, this.form.email);
+
+    this.authenticationService.signUp(signUpRequest).subscribe({
+      next: () => {
+        const signInRequest = new SignInRequest(this.form.username, this.form.password);
+        this.authenticationService.signIn(signInRequest).subscribe({
+          next: () => {
+            const profileData = {
+              firstName: firstName,
+              lastName: lastName,
+              email: this.form.email,
+              phoneNumber: this.form.phoneNumber,
+              ruc: this.form.ruc,
+              planId: null
+            };
+            this.profileApiService.createProfile(profileData).subscribe({
+              next: () => {
+                this.submitted = true;
+                this.router.navigate(['/plans']);
+              },
+              error: (err: any) => {
+                console.error('Error creating profile:', err);
+                this.router.navigate(['/plans']);
+              }
+            });
+          },
+          error: (err: any) => console.error('Error signing in after registration:', err)
+        });
+      },
+      error: (err: any) => console.error('Error during sign up:', err)
+    });
   }
 }
