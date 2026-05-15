@@ -13,13 +13,15 @@ export class ProfileApiService extends BaseService<Profile>{
   }
 
   updateProfile(profile: any): Observable<any> {
-    return this.http.put(`${this.basePath}/profiles`, profile); // <-- sin ID
+    return this.http.put(`${this.basePath}/profiles`, profile);
+  }
+
+  createProfile(profile: any): Observable<any> {
+    return this.http.post(`${this.basePath}/profiles`, profile);
   }
 
   constructor() {
     super();
     this.resourceEndPoint = '/profiles';
   }
-
-
 }
