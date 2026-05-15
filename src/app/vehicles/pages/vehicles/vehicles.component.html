@@ -1,38 +1,98 @@
-<section id="vehiclesSection">
-  <app-header></app-header>
+<app-header></app-header>
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-28 py-6 flex-wrap items-center justify-between">
-    <div class="container mr-auto px-4.5 py-4.5 flex-wrap items-center justify-between">
-      <!-- {{ 'my_vehicles' | translate }} -->
-      <h1 class="text-4xl mr-auto font-bold text-customGreen">{{ 'my_vehicles' | translate }}</h1>
+<section class="min-h-screen bg-gray-50">
+
+  <!-- Hero banner -->
+  <div class="bg-gradient-to-r from-green-600 to-green-500 px-6 py-10">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-white">{{ 'my_vehicles' | translate }}</h1>
+        <p class="text-green-100 mt-1 text-sm">{{ 'explore_selection' | translate }}</p>
+      </div>
+      <a routerLink="/postVehicle"
+        class="inline-flex items-center gap-2 bg-white text-green-600 font-semibold px-5 py-2.5 rounded-xl shadow hover:shadow-md hover:bg-green-50 transition-all duration-200">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Publicar
+      </a>
     </div>
-    <div class="container mr-auto px-4.5 py-6 flex items-center justify-between">
-      <!-- {{ 'explore_selection' | translate }} -->
-      <p>{{ 'explore_selection' | translate }}</p>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 py-10">
+
+    <!-- Empty state -->
+    <div *ngIf="vehicleData.length === 0"
+      class="flex flex-col items-center justify-center py-24 text-center">
+      <div class="bg-green-100 rounded-full p-6 mb-5">
+        <svg class="w-12 h-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M12 4v16m8-8H4" />
+        </svg>
+      </div>
+      <h2 class="text-xl font-bold text-gray-700 mb-2">Aún no tienes vehículos</h2>
+      <p class="text-gray-400 text-sm mb-6">Publica tu primer vehículo y empieza a recibir reservas</p>
+      <a routerLink="/postVehicle"
+        class="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 active:scale-95">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Publicar vehículo
+      </a>
     </div>
+
+    <!-- Vehicle grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div *ngFor="let vehicle of vehicleData" class="bg-white shadow-md rounded-lg p-4">
-        <div class="flex flex-col items-center">
-          <span class="text-customGreen font-bold mb-2">{{ vehicle.name }}</span>
-          <img [alt]="vehicle.name"
-               [src]="vehicle.imageUrl"
-               class="w-32 h-32 object-cover rounded-lg"
-               mat-card-image />
-          <div class="mt-2 text-center">
-            <p class="text-gray-500 rounded">{{ vehicle.description }}</p>
+      <div *ngFor="let vehicle of vehicleData"
+        class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+        [routerLink]="['/vehicles', vehicle.id]">
+
+        <!-- Image -->
+        <div class="relative h-44 bg-gray-100 overflow-hidden">
+          <img
+            [src]="vehicle.imageUrl || 'https://ecomovil-vehicle-images.s3.amazonaws.com/vehicles/default.jpg'"
+            [alt]="vehicle.name"
+            class="w-full h-full object-cover"
+            onerror="this.src='https://via.placeholder.com/400x200?text=Sin+imagen'"
+          />
+          <!-- Type badge -->
+          <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-green-700 text-xs font-semibold px-2.5 py-1 rounded-lg">
+            {{ vehicle.type }}
+          </span>
+          <!-- Available badge -->
+          <span *ngIf="vehicle.isAvailable"
+            class="absolute top-3 right-3 bg-green-500 text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
+            Disponible
+          </span>
+          <span *ngIf="!vehicle.isAvailable"
+            class="absolute top-3 right-3 bg-gray-400 text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
+            No disponible
+          </span>
+        </div>
+
+        <!-- Content -->
+        <div class="p-4">
+          <div class="flex items-start justify-between mb-1">
+            <h3 class="font-bold text-gray-800 text-base leading-tight">{{ vehicle.name }}</h3>
+            <span class="text-xs text-gray-400 shrink-0 ml-2">{{ vehicle.year }}</span>
+          </div>
+          <p class="text-gray-500 text-xs line-clamp-2 mb-3">{{ vehicle.description }}</p>
+
+          <!-- Prices -->
+          <div class="flex items-center gap-3 pt-3 border-t border-gray-100">
+            <div class="flex-1 text-center">
+              <p class="text-xs text-gray-400 mb-0.5">Venta</p>
+              <p class="font-bold text-green-600 text-sm">S/ {{ vehicle.priceSell }}</p>
+            </div>
+            <div class="w-px h-8 bg-gray-100"></div>
+            <div class="flex-1 text-center">
+              <p class="text-xs text-gray-400 mb-0.5">Renta / día</p>
+              <p class="font-bold text-green-600 text-sm">S/ {{ vehicle.priceRent }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-      @for  (option of options; track option.title){
 
-    <div class="container mr-auto px-4.5 py-6 flex items-center justify-between">
-      <button [routerLink]="option.path" class="bg-customGreen hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-        <a >Add +</a>
-      </button>
-    </div>
-
-      }
   </div>
-
 </section>

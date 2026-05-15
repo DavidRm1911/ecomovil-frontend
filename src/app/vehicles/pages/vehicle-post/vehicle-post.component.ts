@@ -22,7 +22,12 @@ import {LogoApiService} from '../../../shared/services/logo-api.service';
 })
 export class VehiclePostComponent implements OnInit {
   protected vehicleData: Vehicle[] = [];
-  public newVehicle: Vehicle = new Vehicle({}); // Initialize the object here
+  public newVehicle: Vehicle = new Vehicle({});
+
+  selectedImageFile: File | null = null;
+  imagePreview: string | null = null;
+  imageUploadError = '';
+  uploading = false;
 
   private vehicleService: VehicleService = inject(VehicleService);
   private Logo = inject(LogoApiService);
@@ -39,7 +44,6 @@ export class VehiclePostComponent implements OnInit {
 
   private getAllVehicles() {
     this.vehicleService.getAll().subscribe((response: Vehicle[]) => {
-      console.log(response);
       this.vehicleData = response;
     });
   }
@@ -48,16 +52,8 @@ export class VehiclePostComponent implements OnInit {
     return new Promise((resolve, reject) => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-          (position) => {
-            resolve({
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            });
-          },
-          (error) => {
-            console.error('Error', error);
-            reject(error);
-          }
+          (position) => resolve({ lat: position.coords.latitude, lng: position.coords.longitude }),
+          (error) => { console.error('Error', error); reject(error); }
         );
       } else {
         reject('Geolocalización no soportada');
@@ -65,25 +61,65 @@ export class VehiclePostComponent implements OnInit {
     });
   }
 
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+    const file = input.files[0];
+    if (file.size > 5 * 1024 * 1024) {
+      this.imageUploadError = 'La imagen no puede superar 5 MB';
+      return;
+    }
+    this.imageUploadError = '';
+    this.selectedImageFile = file;
+    const reader = new FileReader();
+    reader.onload = (e) => { this.imagePreview = e.target?.result as string; };
+    reader.readAsDataURL(file);
+  }
+
   public onClick(): void {
-    if (this.newVehicle.description && this.newVehicle.type && this.newVehicle.year && this.newVehicle.priceSell && this.newVehicle.priceRent && this.newVehicle.name) {
-      this.getCurrentLocation().then((coords) => {
-        this.newVehicle.lat = coords.lat;
-        this.newVehicle.lng = coords.lng;
-        this.newVehicle.imageUrl = this.newVehicle.imageUrl || 'https://www.oxfordstore.pe/media/catalog/product/cache/aae873136fa0fde5dba4b938a53c66f6/b/d/bd2979_sierra_29_negro_2021_01.jpg';
-        this.vehicleService.create(this.newVehicle).subscribe({
-          next: (response: any) => {
-            this.vehicleData = [...this.vehicleData, response];
-            this.newVehicle = new Vehicle({}); // Reset the object after submission
-            this.router.navigate(['/myVehicles']).then();
+    if (!this.newVehicle.description || !this.newVehicle.type || !this.newVehicle.year ||
+        !this.newVehicle.priceSell || !this.newVehicle.priceRent || !this.newVehicle.name) return;
+
+    this.getCurrentLocation().then((coords) => {
+      this.newVehicle.lat = coords.lat;
+      this.newVehicle.lng = coords.lng;
+
+      if (this.selectedImageFile) {
+        this.uploading = true;
+        this.vehicleService.uploadImage(this.selectedImageFile).subscribe({
+          next: (res) => {
+            this.newVehicle.imageUrl = res.url;
+            this.createVehicle();
           },
           error: (err) => {
-            console.error('Error creando el vehículo:', err);
+            console.error('Error uploading image:', err);
+            this.uploading = false;
+            this.imageUploadError = 'Error al subir la imagen. Intenta de nuevo.';
           }
         });
-      }).catch((error) => {
-        console.error('Error al obtener la ubicación: ', error);
-      });
-    }
+      } else {
+        this.newVehicle.imageUrl = 'https://ecomovil-vehicle-images.s3.amazonaws.com/vehicles/default.jpg';
+        this.createVehicle();
+      }
+    }).catch((error) => {
+      console.error('Error al obtener la ubicación: ', error);
+    });
+  }
+
+  private createVehicle(): void {
+    this.vehicleService.create(this.newVehicle).subscribe({
+      next: (response: any) => {
+        this.vehicleData = [...this.vehicleData, response];
+        this.newVehicle = new Vehicle({});
+        this.selectedImageFile = null;
+        this.imagePreview = null;
+        this.uploading = false;
+        this.router.navigate(['/myVehicles']).then();
+      },
+      error: (err) => {
+        console.error('Error creando el vehículo:', err);
+        this.uploading = false;
+      }
+    });
   }
 }

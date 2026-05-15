@@ -1,8 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Vehicle} from "../../model/vehicle.entity";
 import {VehicleService} from "../../services/vehicle.service";
-import {NgForOf} from "@angular/common";
-import {MatCardImage} from "@angular/material/card";
+import {NgForOf, NgIf} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {HeaderComponent} from "../../../public/components/header/header.component";
 import {TranslateModule} from "@ngx-translate/core";
@@ -13,7 +12,7 @@ import {LogoApiService} from '../../../shared/services/logo-api.service';
   standalone: true,
   imports: [
     NgForOf,
-    MatCardImage,
+    NgIf,
     RouterLink,
     TranslateModule,
     HeaderComponent

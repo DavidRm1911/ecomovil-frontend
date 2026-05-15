@@ -23,4 +23,10 @@ export class VehicleService extends BaseService<Vehicle> {
   getVehiclePublic(id: number) {
     return this.http.get<Vehicle>(`${this.basePath}/vehicles/public/${id}`);
   }
+
+  uploadImage(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<{ url: string }>(`${this.basePath}/vehicles/upload-image`, formData);
+  }
 }
