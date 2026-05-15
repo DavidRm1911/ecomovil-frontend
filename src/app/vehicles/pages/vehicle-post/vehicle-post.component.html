@@ -1,111 +1,126 @@
-<section id="vehiclesSection">
-  <app-header></app-header>
+<app-header></app-header>
 
+<section class="min-h-screen bg-gray-50 py-10 px-4">
+  <div class="max-w-2xl mx-auto">
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-28 py-6 flex-wrap items-center justify-between">
-    <div class="container mr-auto px-4.5 py-4.5 flex-wrap items-center justify-between">
-      <h1 class="text-4xl mr-auto font-bold text-customGreen">{{ 'post_details' | translate }}</h1>
+    <!-- Header card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-6">
+      <div class="flex items-center gap-4 mb-2">
+        <div class="bg-green-100 p-3 rounded-xl">
+          <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 4v16m8-8H4" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">{{ 'post_details' | translate }}</h1>
+          <p class="text-gray-500 text-sm">{{ 'provide_information' | translate }}</p>
+        </div>
+      </div>
     </div>
-    <div class="container mr-auto px-4.5 py-6 flex items-center justify-between">
-      <p>{{ 'provide_information' | translate }}</p>
-    </div>
 
-    <form  #vehicleForm="ngForm">
-      <div class=" gap-6 border-2 mr-auto px-10 py-9">
+    <!-- Form card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+      <form #vehicleForm="ngForm" class="space-y-6">
 
-        <!-- Campo Name -->
-        <div class="flex flex-col">
-          <label for="name" class="text-black-alpha-10 font-medium mb-2">Name</label>
+        <!-- Name -->
+        <div>
+          <label for="name" class="block text-sm font-semibold text-gray-700 mb-1">Name</label>
           <input
             id="name"
             name="name"
+            type="text"
             [(ngModel)]="newVehicle.name"
             #name="ngModel"
             required
-            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="e.g. Mountain Bike Pro 2024"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition text-gray-800 placeholder-gray-400"
           />
-          <div *ngIf="name.invalid && name.touched" class="text-red-500 text-sm mt-1">
-            Name is required
+          <p *ngIf="name.invalid && name.touched" class="text-red-500 text-xs mt-1">Name is required</p>
+        </div>
+
+        <!-- Type + Year (2 columns) -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="type" class="block text-sm font-semibold text-gray-700 mb-1">{{ 'vehicle_type' | translate }}</label>
+            <select
+              id="type"
+              name="type"
+              [(ngModel)]="newVehicle.type"
+              #type="ngModel"
+              required
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition text-gray-800"
+            >
+              <option value="" disabled selected>Select type</option>
+              <option value="Bike">Bike</option>
+              <option value="rollskater">Rollskater</option>
+              <option value="monopatin">Monopatin</option>
+            </select>
+            <p *ngIf="type.invalid && type.touched" class="text-red-500 text-xs mt-1">Type is required</p>
+          </div>
+
+          <div>
+            <label for="year" class="block text-sm font-semibold text-gray-700 mb-1">{{ 'year' | translate }}</label>
+            <input
+              id="year"
+              name="year"
+              type="number"
+              [(ngModel)]="newVehicle.year"
+              #year="ngModel"
+              required
+              min="2000"
+              max="2030"
+              placeholder="2024"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition text-gray-800 placeholder-gray-400"
+            />
+            <p *ngIf="year.invalid && year.touched" class="text-red-500 text-xs mt-1">Year is required (2000–2030)</p>
           </div>
         </div>
 
-        <!-- Campo Type -->
-        <div class="flex flex-col">
-          <label for="type" class="text-black-alpha-10 font-medium mb-2">{{ 'vehicle_type' | translate }}</label>
-          <select
-            id="type"
-            name="type"
-            [(ngModel)]="newVehicle.type"
-            #type="ngModel"
-            required
-            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-          >
-            <option value="" disabled selected>Select a type</option>
-            <option value="Bike">Bike</option>
-            <option value="rollskater">rollskater</option>
-            <option value="monopatin">monopatin</option>
-          </select>
-          <div *ngIf="type.invalid && type.touched" class="text-red-500 text-sm mt-1">
-            Type is required
+        <!-- Prices (2 columns) -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="price" class="block text-sm font-semibold text-gray-700 mb-1">{{ 'price' | translate }} (S/)</label>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">S/</span>
+              <input
+                id="price"
+                name="price"
+                type="number"
+                [(ngModel)]="newVehicle.priceSell"
+                #price="ngModel"
+                required
+                min="0"
+                placeholder="0.00"
+                class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition text-gray-800 placeholder-gray-400"
+              />
+            </div>
+            <p *ngIf="price.invalid && price.touched" class="text-red-500 text-xs mt-1">Sale price is required</p>
+          </div>
+
+          <div>
+            <label for="rentalPrice" class="block text-sm font-semibold text-gray-700 mb-1">{{ 'rental_price' | translate }} (S/)</label>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-medium">S/</span>
+              <input
+                id="rentalPrice"
+                name="rentalPrice"
+                type="number"
+                [(ngModel)]="newVehicle.priceRent"
+                #rentalPrice="ngModel"
+                required
+                min="0"
+                placeholder="0.00"
+                class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition text-gray-800 placeholder-gray-400"
+              />
+            </div>
+            <p *ngIf="rentalPrice.invalid && rentalPrice.touched" class="text-red-500 text-xs mt-1">Rental price is required</p>
           </div>
         </div>
 
-        <!-- Campo Year -->
-        <div class="flex flex-col">
-          <label for="year" class="text-black font-medium mb-2">{{ 'year' | translate }}</label>
-          <input
-            id="year"
-            name="year"
-            type="number"
-            [(ngModel)]="newVehicle.year"
-            #year="ngModel"
-            required
-            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-          <div *ngIf="year.invalid && year.touched" class="text-red-500 text-sm mt-1">
-            Year is required
-          </div>
-        </div>
-
-        <!-- Campo Price -->
-        <div class="flex flex-col">
-          <!-- {{ 'edit_profile' | translate }} -->
-          <label for="price" class="text-black font-medium mb-2">{{ 'price' | translate }}</label>
-          <input
-            id="price"
-            name="price"
-            type="number"
-            [(ngModel)]="newVehicle.priceSell"
-            #price="ngModel"
-            required
-            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-          <div *ngIf="price.invalid && price.touched" class="text-red-500 text-sm mt-1">
-            Price is required
-          </div>
-        </div>
-
-        <!-- Campo Rental Prince -->
-        <div class="flex flex-col">
-          <!-- {{ 'edit_profile' | translate }} -->
-          <label for="rentalPrice" class="text-black-alpha-10 font-medium mb-2">{{ 'rental_price' | translate }}</label>
-          <input
-            id="rentalPrice"
-            name="rentalPrice"
-            type="number"
-            [(ngModel)]="newVehicle.priceRent"
-            #rentalPrice="ngModel"
-            required
-            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-          <div *ngIf="rentalPrice.invalid && rentalPrice.touched" class="text-red-500 text-sm mt-1">
-            Rental Price is required
-          </div>
-        </div>
-
-        <!-- Campo Description -->
-        <div class="flex flex-col">
-          <label for="description" class="text-black font-medium mb-2">{{ 'description' | translate }}</label>
+        <!-- Description -->
+        <div>
+          <label for="description" class="block text-sm font-semibold text-gray-700 mb-1">{{ 'description' | translate }}</label>
           <textarea
             id="description"
             name="description"
@@ -113,23 +128,26 @@
             #description="ngModel"
             required
             rows="4"
-            class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Describe the condition, features, and any relevant details..."
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition text-gray-800 placeholder-gray-400 resize-none"
           ></textarea>
-          <div *ngIf="description.invalid && description.touched" class="text-red-500 text-sm mt-1">
-            Description is required
-          </div>
+          <p *ngIf="description.invalid && description.touched" class="text-red-500 text-xs mt-1">Description is required</p>
         </div>
 
-        <!-- Botón Add incorporated-->
-        <div class="container mr-auto px-4.5 py-6 flex items-center justify-between">
-          <button type="submit" [disabled]="vehicleForm.invalid" class="bg-red-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full" (click)="onClick()">
-            {{ 'save_vehicle' | translate }}
-          </button>
+        <!-- Submit -->
+        <button
+          type="submit"
+          [disabled]="vehicleForm.invalid"
+          (click)="onClick()"
+          class="w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-200
+            bg-green-500 hover:bg-green-600 active:scale-95
+            disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-green-500"
+        >
+          {{ 'save_vehicle' | translate }}
+        </button>
 
+      </form>
+    </div>
 
-        </div>
-      </div>
-    </form>
   </div>
-
 </section>
