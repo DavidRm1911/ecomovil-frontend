@@ -1,6 +1,5 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {UserService} from "../../../auth/services/user.service";
-import {User} from "../../../auth/model/user.entity";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {NgIf} from '@angular/common';
 import {HeaderComponent} from "../../components/header/header.component";
 import {take} from "rxjs";
 import {ConfirmationComponent} from '../../../users/ProfileAcquirers/components/confirmation/confirmation.component';
@@ -13,7 +12,8 @@ import {ProfileComponent} from '../../../users/ProfileAcquirers/components/profi
   imports: [
     ProfileComponent,
     ConfirmationComponent,
-    HeaderComponent
+    HeaderComponent,
+    NgIf
   ],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.css'
