@@ -1,7 +1,7 @@
 <div class="card-container">
   <div class="columnaFor">
     <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-      <div class="group-label-placeholder" >
+      <div class="group-label-placeholder">
         <label for="name">Name</label>
         <input id="name" formControlName="name" class="form-control" placeholder="Enter your full names"/>
         <div [hidden]="profileForm.get('name')?.valid || profileForm.get('name')?.pristine" class="text-red-500 text-sm mt-1">
@@ -11,21 +11,29 @@
 
       <div class="group-label-placeholder">
         <label for="email">Email</label>
-        <input id="email"  formControlName="email"  placeholder="name@example.com"/>
+        <input id="email" formControlName="email" placeholder="name@example.com"/>
         <div [hidden]="profileForm.get('email')?.valid || profileForm.get('email')?.pristine" class="text-red-500 text-sm mt-1">
           Email is required
         </div>
       </div>
 
       <div class="group-label-placeholder">
-        <label for="phone">Phone</label>
-        <input id="phone" formControlName="phone" placeholder="+51 123-456-789"/>
-        <div [hidden] = "profileForm.get('phone')?.valid || profileForm.get('phone')?.pristine" class="text-red-500 text-sm mt-1">
+        <label for="phone">Phone (9 digits)</label>
+        <input id="phone" formControlName="phone" placeholder="987654321"/>
+        <div [hidden]="profileForm.get('phone')?.valid || profileForm.get('phone')?.pristine" class="text-red-500 text-sm mt-1">
           Phone is required
         </div>
       </div>
 
-      <button class="buttonSubmit" type="submit"  [disabled]="profileForm.invalid" >Save Changes</button>
+      <div class="group-label-placeholder">
+        <label for="ruc">RUC (11 digits)</label>
+        <input id="ruc" formControlName="ruc" placeholder="12345678901"/>
+        <div [hidden]="profileForm.get('ruc')?.valid || profileForm.get('ruc')?.pristine" class="text-red-500 text-sm mt-1">
+          RUC is required
+        </div>
+      </div>
+
+      <button class="buttonSubmit" type="submit" [disabled]="profileForm.invalid">Save Changes</button>
     </form>
   </div>
 
