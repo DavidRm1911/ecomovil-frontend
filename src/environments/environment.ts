@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  serverBasePath: 'https://app-250421124000.azurewebsites.net/api/v1'
+  serverBasePath: 'http://ecomovil-alb-117754319.us-east-1.elb.amazonaws.com/api/v1'
 };
