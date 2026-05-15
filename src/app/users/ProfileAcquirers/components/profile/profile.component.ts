@@ -11,30 +11,40 @@ import {NgIf} from "@angular/common";
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-  @Input() profile!: Profile;
-  @Output() profileChange = new EventEmitter<Profile>();
-  options = [
-    {path: '/sellereditProfile', title: 'sellereditProfile'}
-  ]
+  @Input() set profile(value: Profile) {
+    this._profile = value;
+    if (value) {
+      this.profileForm.patchValue({
+        name: value.fullName || '',
+        email: value.email || '',
+        phone: value.phoneNumber || '',
+        ruc: value.ruc || ''
+      });
+    }
+  }
+  get profile(): Profile { return this._profile; }
+  private _profile!: Profile;
+
+  @Output() profileChange = new EventEmitter<any>();
+
   profileForm = new FormGroup({
     name: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
     phone: new FormControl('', Validators.required),
+    ruc: new FormControl('', Validators.required)
   });
 
   constructor() {
-    this.profile = new Profile({id: 1});
+    this._profile = new Profile({id: 1});
   }
 
   onSubmit() {
-    this.updateProfile();
-    this.profileChange.emit(this.profile);
+    this.profileChange.emit({
+      fullName: this.profileForm.get('name')?.value ?? '',
+      email: this.profileForm.get('email')?.value ?? '',
+      phoneNumber: this.profileForm.get('phone')?.value ?? '',
+      ruc: this.profileForm.get('ruc')?.value ?? '',
+      planId: this._profile?.planId ?? null
+    });
   }
-
-  updateProfile(){
-    this.profile.fullName = this.profileForm.get('name')?.value ?? '';
-    this.profile.email = this.profileForm.get('email')?.value ?? '';
-    this.profile.phoneNumber = this.profileForm.get('phone')?.value ?? '';
-  }
-
 }
