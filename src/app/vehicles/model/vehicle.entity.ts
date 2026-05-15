@@ -30,7 +30,7 @@ export class Vehicle {
   lat: number;
   lng: number;
   description: string;
-
+  studentId: number;
 
   constructor(vehicle:{
     id?: number,
@@ -54,11 +54,11 @@ export class Vehicle {
     this.review = vehicle.review || 0;
     this.priceSell = vehicle.priceSell || 0;
     this.priceRent = vehicle.priceRent || 0;
-    this.priceRent = vehicle.priceRent || 0;
     this.isAvailable = vehicle.isAvailable || true;
     this.imageUrl = vehicle.imageUrl || "";
     this.lat = vehicle.lat || 0;
     this.lng = vehicle.lng || 0;
     this.description = vehicle.description || "";
+    this.studentId = vehicle.studentId || 0;
   }
 }
