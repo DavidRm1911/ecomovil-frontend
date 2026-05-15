@@ -52,9 +52,13 @@ export class VehicleDetailsAcquirerComponent implements OnInit{
   }
 
   private getVehiclebyId(id: number) {
-    this.vehicleService.getbyId(id).subscribe((response: Vehicle) => {
-      console.log('🚗 Vehículo recibido:', response);
-      this.vehicleData = response;
+    this.vehicleService.getVehiclePublic(id).subscribe({
+      next: (response: Vehicle) => {
+        this.vehicleData = response;
+      },
+      error: (err) => {
+        console.error('Error loading vehicle:', err);
+      }
     });
   }
   redirectToWhatsApp() {

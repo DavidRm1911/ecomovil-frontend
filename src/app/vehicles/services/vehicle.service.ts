@@ -19,4 +19,8 @@ export class VehicleService extends BaseService<Vehicle> {
   getByType(type: string) {
     return this.http.get<Vehicle[]>(`${this.basePath}/vehicles/type/${type}`);
   }
+
+  getVehiclePublic(id: number) {
+    return this.http.get<Vehicle>(`${this.basePath}/vehicles/public/${id}`);
+  }
 }
