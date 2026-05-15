@@ -44,7 +44,7 @@ export class ProfileComponent {
       email: this.profileForm.get('email')?.value ?? '',
       phoneNumber: this.profileForm.get('phone')?.value ?? '',
       ruc: this.profileForm.get('ruc')?.value ?? '',
-      planId: this._profile?.planId ?? null
+      planId: null
     });
   }
 }
