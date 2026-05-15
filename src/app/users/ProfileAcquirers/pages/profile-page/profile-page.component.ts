@@ -6,6 +6,7 @@ import {ProfileApiService} from "../../services/profile-api.service";
 import {take} from "rxjs";
 import {HeaderComponent} from '../../../../public/components/header/header.component';
 import {UserService} from '../../../../auth/services/user.service';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-profile-page',
@@ -14,49 +15,65 @@ import {UserService} from '../../../../auth/services/user.service';
     ProfileComponent,
     ConfirmationComponent,
     TranslateModule,
-    HeaderComponent
+    HeaderComponent,
+    NgIf
   ],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.css'
 })
 export class ProfilePageComponent implements OnInit {
-  user: any;
+  user: any = null;
   @ViewChild('confirmation') confirmation!: ConfirmationComponent;
 
   constructor(
     private userService: UserService,
     private profileApiService: ProfileApiService
   ) {}
+
   ngOnInit(): void {
-    this.profileApiService.getMyProfile().subscribe(data => {
-      this.user = data;
+    this.profileApiService.getMyProfile().subscribe({
+      next: (data) => {
+        this.user = data;
+      },
+      error: (err) => {
+        if (err.status === 404) {
+          this.user = { fullName: '', email: '', phoneNumber: '', ruc: '', planId: null };
+        } else {
+          console.error('Error loading profile:', err);
+          this.user = { fullName: '', email: '', phoneNumber: '', ruc: '', planId: null };
+        }
+      }
     });
   }
 
   userChange(updatedUser: any) {
-    const [firstName, lastName] = updatedUser.fullName.split(' ');
+    const parts = (updatedUser.fullName || '').trim().split(' ');
+    const firstName = parts[0] || '';
+    const lastName = parts.slice(1).join(' ') || parts[0] || '';
 
     const payload = {
-      firstName: firstName || '',
-      lastName: lastName || '',
+      firstName,
+      lastName,
       email: updatedUser.email,
       phoneNumber: updatedUser.phoneNumber,
       ruc: updatedUser.ruc,
-      planId: updatedUser.planId
+      planId: updatedUser.planId ?? null
     };
 
-    this.profileApiService.updateProfile(payload)
-      .pipe(take(1))  // <-- toma solo 1 emisión y se auto-cierra
-      .subscribe({
-        next: (data) => {
-          console.log('✅ Perfil actualizado:', data);
-          this.confirmation.message = 'Datos actualizados correctamente!';
-          this.confirmation.show();
-        },
-        error: (err) => {
-          console.error('❌ Error al actualizar perfil:', err);
-        }
-      });
+    const isNewProfile = !this.user?.id;
+    const request$ = isNewProfile
+      ? this.profileApiService.createProfile(payload)
+      : this.profileApiService.updateProfile(payload);
+
+    request$.pipe(take(1)).subscribe({
+      next: (data) => {
+        this.user = data;
+        this.confirmation.message = 'Datos actualizados correctamente!';
+        this.confirmation.show();
+      },
+      error: (err) => {
+        console.error('Error al guardar perfil:', err);
+      }
+    });
   }
 }
-

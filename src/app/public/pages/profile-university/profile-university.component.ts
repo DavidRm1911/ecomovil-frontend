@@ -42,9 +42,17 @@ export class ProfileUniversityComponent implements OnInit {
   constructor(private profileService: ProfileApiService,private userService: UserService, private authService: AuthenticationService) { }
     ngOnInit(): void {
         // Llamada al servicio para obtener un solo usuario
-      this.profileService.getMyProfile().subscribe(data => {
-        this.user = data;
-        console.log('Perfil obtenido:', this.user);
+      this.profileService.getMyProfile().subscribe({
+        next: (data) => {
+          this.user = data;
+        },
+        error: (err) => {
+          if (err.status === 404) {
+            this.user = { fullName: '', email: '', phoneNumber: '', ruc: '' };
+          } else {
+            console.error('Error loading profile:', err);
+          }
+        }
       });
     }
   getLogoUrl(url: string | undefined) {
