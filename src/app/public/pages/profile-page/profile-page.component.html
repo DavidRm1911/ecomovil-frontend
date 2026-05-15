@@ -8,9 +8,12 @@
       Personal information and purchases or rental preferences.
     </h6>
 
-    <div>
+    <div *ngIf="user !== null; else loading">
       <app-profile [profile]="user" (profileChange)="userChange($event)"></app-profile>
     </div>
+    <ng-template #loading>
+      <p style="margin-left: 10px; color: #939393;">Loading profile...</p>
+    </ng-template>
   </div>
 </div>
 
