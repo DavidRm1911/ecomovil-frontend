@@ -9,9 +9,7 @@
   </div>
 
   <div class="max-w-5xl mx-auto px-6 py-14">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-      <app-plan-item *ngFor="let plan of planes" [plan]="plan"></app-plan-item>
-    </div>
+    <app-plan-list [planes]="planes"></app-plan-list>
   </div>
 
 </section>

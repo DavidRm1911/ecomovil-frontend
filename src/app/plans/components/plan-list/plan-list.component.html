@@ -1,8 +1,5 @@
-
-<div class="card-container">
-
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
   @for (plan of planes; track plan.name){
     <app-plan-item [plan]="plan"></app-plan-item>
   }
-
 </div>
