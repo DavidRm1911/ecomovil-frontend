@@ -13,10 +13,10 @@ export class VehicleService extends BaseService<Vehicle> {
   }
 
   getMyVehicles() {
-    return this.http.get<Vehicle[]>(`https://app-250421124000.azurewebsites.net/api/v1/vehicles/my-vehicles`);
+    return this.http.get<Vehicle[]>(`${this.basePath}/vehicles/my-vehicles`);
   }
 
   getByType(type: string) {
-    return this.http.get<Vehicle[]>(`https://app-250421124000.azurewebsites.net/api/v1/vehicles/type/${type}`);
+    return this.http.get<Vehicle[]>(`${this.basePath}/vehicles/type/${type}`);
   }
 }
