@@ -1,0 +1,17 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+        - sed -i "s/GOOGLE_MAPS_KEY_PLACEHOLDER/$GOOGLE_MAPS_KEY/g" src/environments/environment.ts
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: dist/front-end/browser
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*

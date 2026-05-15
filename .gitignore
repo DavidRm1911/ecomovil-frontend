@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Local environment secrets — never commit real keys
+src/environments/environment.development.ts
