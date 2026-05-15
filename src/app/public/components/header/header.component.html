@@ -1,50 +1,135 @@
-<section id="header-section">
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-sm">
-    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+<header class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
 
-      <a class="flex items-center space-x-2" routerLink="#">
-        <img src="./Verde_Ruta_Logo.png" class="h-6 w-6 custom-icon">
+      <!-- Logo -->
+      <a routerLink="/home" class="flex items-center gap-2 flex-shrink-0">
+        <img src="./Verde_Ruta_Logo.png" class="h-8 w-8" alt="logo" />
         <span class="text-xl font-bold text-green-600">VerdeRuta</span>
       </a>
 
+      <!-- Desktop nav -->
+      <nav class="hidden md:flex items-center gap-1">
 
-      <nav class="hidden md:flex space-x-6">
-        @for  (option of options; track option.title){
-        <button [routerLink]="option.path" class="text-sm font-medium hover:text-green-600 transition-colors">{{option.title}}</button>
-        }
+        <!-- Explorar dropdown -->
+        <button mat-button [matMenuTriggerFor]="exploreMenu"
+          class="flex items-center gap-1 text-gray-700 hover:text-green-600 font-medium px-3 py-2 rounded-lg hover:bg-green-50 transition-all text-sm">
+          Explorar
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <mat-menu #exploreMenu="matMenu">
+          <button mat-menu-item routerLink="/home">
+            <svg class="w-4 h-4 mr-2 text-green-500 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-9 9 9M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9" />
+            </svg>
+            Home
+          </button>
+          <button mat-menu-item routerLink="/interactiveMap">
+            <svg class="w-4 h-4 mr-2 text-green-500 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            </svg>
+            Mapa Interactivo
+          </button>
+          <button mat-menu-item routerLink="/filter">
+            <svg class="w-4 h-4 mr-2 text-green-500 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z" />
+            </svg>
+            Filtros
+          </button>
+        </mat-menu>
+
+        <!-- Vehículos dropdown -->
+        <button mat-button [matMenuTriggerFor]="vehiclesMenu"
+          class="flex items-center gap-1 text-gray-700 hover:text-green-600 font-medium px-3 py-2 rounded-lg hover:bg-green-50 transition-all text-sm">
+          Vehículos
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <mat-menu #vehiclesMenu="matMenu">
+          <button mat-menu-item routerLink="/myVehicles">
+            <svg class="w-4 h-4 mr-2 text-green-500 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            Mis Vehículos
+          </button>
+          <button mat-menu-item routerLink="/postVehicle">
+            <svg class="w-4 h-4 mr-2 text-green-500 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Publicar Vehículo
+          </button>
+        </mat-menu>
+
+        <!-- Planes (direct) -->
+        <button mat-button routerLink="/plans"
+          class="text-gray-700 hover:text-green-600 font-medium px-3 py-2 rounded-lg hover:bg-green-50 transition-all text-sm">
+          Planes
+        </button>
 
       </nav>
 
-      <div class="hidden md:flex items-center">
-        <button mat-button [matMenuTriggerFor]="aboveMenu">
-          <img src="./Verde_Ruta_Logo.png" class="h-12 w-12 flex-none rounded-full bg-gray-50">
+      <!-- Right: language + avatar -->
+      <div class="hidden md:flex items-center gap-3">
+        <app-language-switcher></app-language-switcher>
+
+        <button mat-button [matMenuTriggerFor]="profileMenu" class="rounded-full p-1">
+          <div class="h-9 w-9 rounded-full bg-green-100 flex items-center justify-center">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
         </button>
-        <mat-menu #aboveMenu="matMenu" yPosition="above">
-          @for (option of optionsLogin; track option.title){
-          <button mat-menu-item [routerLink]="option.path">{{option.title}}</button>
-          }
+        <mat-menu #profileMenu="matMenu">
+          <button mat-menu-item routerLink="/sellerProfile">
+            <svg class="w-4 h-4 mr-2 text-gray-500 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            Mi Perfil
+          </button>
+          <button mat-menu-item routerLink="/sellereditProfile">
+            <svg class="w-4 h-4 mr-2 text-gray-500 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Editar Perfil
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="signOut()" style="color: #dc2626;">
+            <svg class="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #dc2626;">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Cerrar Sesión
+          </button>
         </mat-menu>
       </div>
 
-      <div class="md:hidden">
-        <button mat-button [matMenuTriggerFor]="hamburgerMenu">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-        <mat-menu #hamburgerMenu="matMenu" yPosition="above">
-          @for  (option of options; track option.title){
-          <button mat-menu-item [routerLink]="option.path">{{option.title}}</button>
-          }
-
-          <button mat-menu-item routerLink="/myVehicles" >Sign Up</button>
-
-
-          <button mat-menu-item>Settings</button>
-        </mat-menu>
-      </div>
+      <!-- Mobile hamburger -->
+      <button class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100" (click)="toggleMobile()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path *ngIf="!mobileOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          <path *ngIf="mobileOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
- <app-language-switcher></app-language-switcher>
 
-  </header>
-</section>
+    <!-- Mobile menu -->
+    <div *ngIf="mobileOpen" class="md:hidden border-t border-gray-100 py-3 space-y-1">
+      <p class="px-3 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">Explorar</p>
+      <a routerLink="/home" (click)="toggleMobile()" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-green-50 hover:text-green-600">Home</a>
+      <a routerLink="/interactiveMap" (click)="toggleMobile()" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-green-50 hover:text-green-600">Mapa Interactivo</a>
+      <a routerLink="/filter" (click)="toggleMobile()" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-green-50 hover:text-green-600">Filtros</a>
+
+      <p class="px-3 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-2">Vehículos</p>
+      <a routerLink="/myVehicles" (click)="toggleMobile()" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-green-50 hover:text-green-600">Mis Vehículos</a>
+      <a routerLink="/postVehicle" (click)="toggleMobile()" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-green-50 hover:text-green-600">Publicar Vehículo</a>
+      <a routerLink="/plans" (click)="toggleMobile()" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-green-50 hover:text-green-600">Planes</a>
+
+      <p class="px-3 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider mt-2">Cuenta</p>
+      <a routerLink="/sellerProfile" (click)="toggleMobile()" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-green-50 hover:text-green-600">Mi Perfil</a>
+      <a routerLink="/sellereditProfile" (click)="toggleMobile()" class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-green-50 hover:text-green-600">Editar Perfil</a>
+      <button (click)="signOut()" class="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50">Cerrar Sesión</button>
+    </div>
+  </div>
+</header>

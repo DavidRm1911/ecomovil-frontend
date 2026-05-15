@@ -1,3 +1,4 @@
+import {HeaderComponent} from '../../components/header/header.component';
 import {Component, inject, OnInit} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {LogoApiService} from "../../../shared/services/logo-api.service";
@@ -7,7 +8,6 @@ import {RouterLink} from "@angular/router";
 import {TranslateModule} from "@ngx-translate/core";
 import {UserService} from "../../../auth/services/user.service";
 import {AuthenticationService} from "../../../auth/services/authentication.service";
-import {HeaderAcquirerComponent} from "../../components/header-acquirer/header-acquirer.component";
 import {ProfileApiService} from '../../../users/ProfileAcquirers/services/profile-api.service';
 
 @Component({
@@ -24,7 +24,7 @@ import {ProfileApiService} from '../../../users/ProfileAcquirers/services/profil
     MatButton,
     RouterLink,
     TranslateModule,
-    HeaderAcquirerComponent
+    HeaderComponent
   ],
   templateUrl: './profile-university.component.html',
   styleUrl: './profile-university.component.css'

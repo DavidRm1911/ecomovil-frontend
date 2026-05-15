@@ -19,7 +19,7 @@ import {LanguageSwitcherComponent} from "../language-switcher/language-switcher.
   templateUrl: './header-acquirer.component.html',
   styleUrl: './header-acquirer.component.css'
 })
-export class HeaderAcquirerComponent {
+export class HeaderComponent {
   options = [
     {path: '/home', title: 'Home'},
     {path: '/interactiveMap', title: 'Map'},

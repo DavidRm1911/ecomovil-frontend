@@ -1,10 +1,9 @@
+import {HeaderComponent} from '../../components/header/header.component';
 import {Component, inject, Input, OnInit} from '@angular/core';
-import {HeaderComponent} from "../../components/header/header.component";
 import {MatCardImage} from "@angular/material/card";
 import {NgForOf} from "@angular/common";
 import {LogoApiService} from "../../../shared/services/logo-api.service";
 import {RouterLink} from "@angular/router";
-import {HeaderAcquirerComponent} from "../../components/header-acquirer/header-acquirer.component";
 import {Vehicle} from '../../../vehicles/model/vehicle.entity';
 import {VehicleService} from '../../../vehicles/services/vehicle.service';
 
@@ -15,7 +14,7 @@ import {VehicleService} from '../../../vehicles/services/vehicle.service';
     HeaderComponent,
     MatCardImage,
     NgForOf,
-    HeaderAcquirerComponent,
+    HeaderComponent,
     RouterLink
   ],
   templateUrl: './home-acquirer.component.html',

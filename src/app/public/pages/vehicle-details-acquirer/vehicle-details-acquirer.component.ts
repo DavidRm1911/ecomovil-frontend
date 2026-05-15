@@ -1,11 +1,10 @@
+import {HeaderComponent} from '../../components/header/header.component';
 import {Component, inject, OnInit} from '@angular/core';
 import {MatCardImage} from "@angular/material/card";
 import {RatingModule} from "primeng/rating";
 import {NgIf, UpperCasePipe} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {LogoApiService} from "../../../shared/services/logo-api.service";
-import {HeaderAcquirerComponent} from "../../components/header-acquirer/header-acquirer.component";
-import {HeaderComponent} from "../../components/header/header.component";
 import {Vehicle} from '../../../vehicles/model/vehicle.entity';
 import {VehicleService} from '../../../vehicles/services/vehicle.service';
 
@@ -19,7 +18,7 @@ import {VehicleService} from '../../../vehicles/services/vehicle.service';
     MatCardImage,
     RatingModule,
     UpperCasePipe,
-    HeaderAcquirerComponent,
+    HeaderComponent,
     HeaderComponent
   ],
   templateUrl: './vehicle-details-acquirer.component.html',

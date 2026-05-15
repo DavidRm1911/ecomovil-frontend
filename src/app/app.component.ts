@@ -5,7 +5,6 @@ import {MatButton} from "@angular/material/button";
 import {NgIf} from "@angular/common";
 import {TranslateService} from "@ngx-translate/core";
 import {HeaderComponent} from "./public/components/header/header.component";
-import {HeaderAcquirerComponent} from "./public/components/header-acquirer/header-acquirer.component";
 import {LogInComponent} from "./auth/pages/log-in/log-in.component";
 import {RegisterUniversityStudentComponent} from "./public/pages/register-university-student/register-university-student.component";
 import {VehiclesComponent} from './vehicles/pages/vehicles/vehicles.component';
@@ -19,7 +18,7 @@ import {RegisterAcquirerComponent} from './public/pages/register-acquirer/regist
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, MatMenu, MatMenuItem, MatButton, MatMenuTrigger, NgIf,
-    HeaderComponent, HeaderAcquirerComponent, VehiclesComponent, VehiclePostComponent,
+    HeaderComponent, VehiclesComponent, VehiclePostComponent,
     InteractiveMapComponent, VehicleDetailsComponent, PlanesPageComponent, LogInComponent,
     RegisterUniversityStudentComponent, RegisterAcquirerComponent],
   templateUrl: './app.component.html',

@@ -1,3 +1,4 @@
+import {HeaderComponent} from '../../components/header/header.component';
 import {Component, inject, OnInit} from '@angular/core';
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {UserService} from "../../../auth/services/user.service";
@@ -7,7 +8,6 @@ import {MatButton} from "@angular/material/button";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {RouterLink} from "@angular/router";
 
-import {HeaderAcquirerComponent} from "../../components/header-acquirer/header-acquirer.component";
 
 @Component({
   selector: 'app-profile-acquirer',
@@ -25,7 +25,7 @@ import {HeaderAcquirerComponent} from "../../components/header-acquirer/header-a
     MatButton,
     MatCheckbox,
     RouterLink,
-    HeaderAcquirerComponent
+    HeaderComponent
   ],
   templateUrl: './profile-acquirer.component.html',
   styleUrl: './profile-acquirer.component.css'

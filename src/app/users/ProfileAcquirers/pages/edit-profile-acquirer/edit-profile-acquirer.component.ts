@@ -1,8 +1,8 @@
+import {HeaderComponent} from '../../../../public/components/header/header.component';
 import { Component, OnInit, ViewChild} from '@angular/core';
 import {ConfirmationComponent} from "../../components/confirmation/confirmation.component";
 import {ProfileComponent} from "../../components/profile/profile.component";
 import {TranslateModule} from "@ngx-translate/core";
-import {HeaderAcquirerComponent} from '../../../../public/components/header-acquirer/header-acquirer.component';
 import {UserService} from '../../../../auth/services/user.service';
 
 @Component({
@@ -12,7 +12,7 @@ import {UserService} from '../../../../auth/services/user.service';
     ConfirmationComponent,
     ProfileComponent,
     TranslateModule,
-    HeaderAcquirerComponent
+    HeaderComponent
   ],
   templateUrl: './edit-profile-acquirer.component.html',
   styleUrl: './edit-profile-acquirer.component.css'

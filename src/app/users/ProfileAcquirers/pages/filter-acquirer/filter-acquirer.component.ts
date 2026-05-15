@@ -1,3 +1,4 @@
+import {HeaderComponent} from '../../../../public/components/header/header.component';
 import { Component, inject, OnInit } from '@angular/core';
 
 import { MatCardModule } from '@angular/material/card';
@@ -8,8 +9,6 @@ import {TranslateModule} from "@ngx-translate/core";
 import {RouterLink} from "@angular/router";
 import {Vehicle} from '../../../../vehicles/model/vehicle.entity';
 import {VehicleService} from '../../../../vehicles/services/vehicle.service';
-import {HeaderAcquirerComponent} from '../../../../public/components/header-acquirer/header-acquirer.component';
-import {HeaderComponent} from '../../../../public/components/header/header.component';
 import {LogoApiService} from '../../../../shared/services/logo-api.service';
 @Component({
   selector: 'app-filter-acquirer',
@@ -20,7 +19,7 @@ import {LogoApiService} from '../../../../shared/services/logo-api.service';
     MatButtonModule,
     MatSelectModule,
     TranslateModule,
-    HeaderAcquirerComponent,
+    HeaderComponent,
     NgIf,
     RouterLink
 

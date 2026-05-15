@@ -1,5 +1,5 @@
+import {HeaderComponent} from '../../components/header/header.component';
 import { Component, inject, OnInit, ViewChild} from '@angular/core';
-import {HeaderAcquirerComponent} from "../../components/header-acquirer/header-acquirer.component";
 import {UserService} from "../../../auth/services/user.service";
 import {ConfirmationComponent} from '../../../users/ProfileAcquirers/components/confirmation/confirmation.component';
 import {ProfileComponent} from '../../../users/ProfileAcquirers/components/profile/profile.component';
@@ -10,7 +10,7 @@ import {ProfileComponent} from '../../../users/ProfileAcquirers/components/profi
   imports: [
     ConfirmationComponent,
     ProfileComponent,
-    HeaderAcquirerComponent
+    HeaderComponent
   ],
   templateUrl: './edit-profile-acquirer.component.html',
   styleUrl: './edit-profile-acquirer.component.css'
