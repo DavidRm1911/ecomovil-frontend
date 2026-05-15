@@ -1,21 +1,38 @@
 <app-header></app-header>
 
-<div class="page container mx-auto px-4 py-3 items-center justify-center">
-  <div class="componente">
-    <div class="title text-4xl mr-auto font-bold text-customGreen" style="margin-left: 10px;">
-      <h2>{{ 'edit_profile' | translate }}</h2>
-    </div>
-    <h6 class="componente-h" style="margin-left: 10px; color: #939393;">
-      {{ 'personal_purchases_rental' | translate }}
-    </h6>
+<section class="min-h-screen bg-gray-50 py-10 px-4">
+  <div class="max-w-lg mx-auto">
 
-    <div *ngIf="user !== null; else loading">
-      <app-profile [profile]="user" (profileChange)="userChange($event)"></app-profile>
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-14 h-14 bg-green-100 rounded-2xl mb-4">
+          <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-800">{{ 'edit_profile' | translate }}</h1>
+        <p class="text-gray-500 text-sm mt-1">{{ 'personal_purchases_rental' | translate }}</p>
+      </div>
+
+      <div *ngIf="user !== null; else loading">
+        <app-profile [profile]="user" (profileChange)="userChange($event)"></app-profile>
+      </div>
+
+      <ng-template #loading>
+        <div class="flex items-center justify-center py-12">
+          <svg class="animate-spin w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+          </svg>
+          <span class="ml-2 text-gray-400 text-sm">Cargando perfil...</span>
+        </div>
+      </ng-template>
+
     </div>
-    <ng-template #loading>
-      <p style="margin-left: 10px; color: #939393;">Cargando perfil...</p>
-    </ng-template>
   </div>
-</div>
+</section>
 
 <app-confirmation #confirmation></app-confirmation>

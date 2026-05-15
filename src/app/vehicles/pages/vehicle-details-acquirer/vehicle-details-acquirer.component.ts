@@ -1,22 +1,18 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {MatCardImage} from "@angular/material/card";
-import {RatingModule} from "primeng/rating";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {NgIf} from "@angular/common";
 import {Vehicle} from "../../model/vehicle.entity";
 import {VehicleService} from "../../services/vehicle.service";
 import {HeaderComponent} from "../../../public/components/header/header.component";
 import {TranslateModule} from "@ngx-translate/core";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {LogoApiService} from '../../../shared/services/logo-api.service';
 
 @Component({
   selector: 'app-vehicle-details-acquirer',
   standalone: true,
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    MatCardImage,
-    RatingModule,
+    NgIf,
+    RouterLink,
     HeaderComponent,
     TranslateModule
   ],

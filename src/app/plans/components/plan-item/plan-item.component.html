@@ -1,33 +1,61 @@
+<div class="relative bg-white rounded-2xl border-2 transition-all duration-200 hover:shadow-lg hover:-translate-y-1 flex flex-col"
+  [class.border-green-500]="plan.name?.includes('Silver') || plan.name?.includes('Plata')"
+  [class.border-gray-100]="!(plan.name?.includes('Silver') || plan.name?.includes('Plata'))"
+  [class.shadow-green-100]="plan.name?.includes('Silver') || plan.name?.includes('Plata')"
+  [class.shadow-md]="plan.name?.includes('Silver') || plan.name?.includes('Plata')">
 
+  <!-- Popular badge -->
+  <div *ngIf="plan.name?.includes('Silver') || plan.name?.includes('Plata')"
+    class="absolute -top-3 left-1/2 -translate-x-1/2">
+    <span class="bg-green-500 text-white text-xs font-bold px-4 py-1 rounded-full shadow-sm">Más popular</span>
+  </div>
 
+  <div class="p-6 flex flex-col flex-1">
 
-<mat-card class="example-card" appearance="outlined">
-  <mat-card-header class="header">
-    <p style="font-weight: bold" style="font-size: 30px; color:#1ACD81" >{{plan.name}}</p>
-  </mat-card-header>
-  <mat-card-content class="content">
-    <p style="margin-bottom: 40px; color: #939393" >Free per month and then ${{plan.price}}/month</p>
-    @if (Number(plan.postMonth) < 100){
-      <p>{{plan.postMonth}} posts per month</p>
-    } @else {
-      <p>Unlimited posts</p>
-    }
+    <!-- Name -->
+    <h3 class="text-xl font-bold text-gray-800 mb-1">{{ plan.name }}</h3>
 
-    @if (plan.name != "Graduado"){
-      <p>{{plan.assistanceType}} assistance</p>
-    } @else {
-      <p>{{plan.assistanceType}}</p>
-    }
+    <!-- Price -->
+    <div class="flex items-baseline gap-1 mb-4">
+      <span class="text-3xl font-extrabold text-green-600">${{ plan.price }}</span>
+      <span class="text-gray-400 text-sm">/mes</span>
+    </div>
 
-    @if (plan.featured == true){
-      <p>Featured posts</p>
-    }
-  </mat-card-content>
-  <a class = "boton-example" mat-fab extended routerLink="." (click)="onClick()">
-    Choose Plan
-  </a>
+    <p class="text-xs text-gray-400 mb-5">Primer mes gratis, luego ${{ plan.price }}/mes</p>
 
+    <!-- Features -->
+    <ul class="space-y-2.5 mb-6 flex-1">
+      <li class="flex items-center gap-2 text-sm text-gray-600">
+        <svg class="w-4 h-4 text-green-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        <span *ngIf="Number(plan.postMonth) < 100">{{ plan.postMonth }} publicaciones/mes</span>
+        <span *ngIf="Number(plan.postMonth) >= 100">Publicaciones ilimitadas</span>
+      </li>
+      <li class="flex items-center gap-2 text-sm text-gray-600">
+        <svg class="w-4 h-4 text-green-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        {{ plan.assistanceType }} asistencia
+      </li>
+      <li *ngIf="plan.featured" class="flex items-center gap-2 text-sm text-gray-600">
+        <svg class="w-4 h-4 text-green-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        Publicaciones destacadas
+      </li>
+    </ul>
 
-</mat-card>
-
-
+    <!-- CTA -->
+    <button (click)="onClick()"
+      class="w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200 active:scale-95"
+      [class.bg-green-500]="plan.name?.includes('Silver') || plan.name?.includes('Plata')"
+      [class.hover:bg-green-600]="plan.name?.includes('Silver') || plan.name?.includes('Plata')"
+      [class.text-white]="plan.name?.includes('Silver') || plan.name?.includes('Plata')"
+      [class.bg-gray-100]="!(plan.name?.includes('Silver') || plan.name?.includes('Plata'))"
+      [class.hover:bg-gray-200]="!(plan.name?.includes('Silver') || plan.name?.includes('Plata'))"
+      [class.text-gray-700]="!(plan.name?.includes('Silver') || plan.name?.includes('Plata'))">
+      Elegir plan
+    </button>
+  </div>
+</div>

@@ -1,11 +1,6 @@
 import {Component, inject, Input } from '@angular/core';
 import {Plan} from "../../model/plan";
-import {
-  MatCard,
-  MatCardContent,
-  MatCardHeader,
-} from "@angular/material/card";
-import {MatFabAnchor} from "@angular/material/button";
+import {NgIf} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
 import {PaymentService} from "../../../shared/services/payment.service";
 
@@ -13,10 +8,7 @@ import {PaymentService} from "../../../shared/services/payment.service";
   selector: 'app-plan-item',
   standalone: true,
   imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardContent,
-    MatFabAnchor,
+    NgIf,
     RouterLink,
   ],
   templateUrl: './plan-item.component.html',

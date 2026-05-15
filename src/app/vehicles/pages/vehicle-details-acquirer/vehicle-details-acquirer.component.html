@@ -1,67 +1,83 @@
-<section id="vehiclesDetailSection">
-  <app-header></app-header>
+<app-header></app-header>
 
-  <div class="container mx-auto px-4 sm:px-6 lg:px-28 py-10">
-    <!-- Título -->
-    <div class="mb-6">
-      <h1 class="text-4xl font-extrabold text-customGreen tracking-tight">
-        {{ 'vehicle_details' | translate }}
-      </h1>
-      <p class="text-gray-600 mt-2">{{ 'providing_information' | translate }}</p>
-    </div>
+<section class="min-h-screen bg-gray-50 py-10 px-4">
+  <div class="max-w-4xl mx-auto">
 
-    <!-- Contenido principal -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 bg-white shadow-lg rounded-lg p-8 border border-gray-200">
+    <!-- Back -->
+    <a routerLink="/home"
+      class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-green-600 transition mb-6">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Volver
+    </a>
 
-      <!-- Imagen + contacto -->
-      <div class="flex flex-col items-center space-y-6">
-        <img
-          [alt]="vehicleData?.name"
-          [src]="vehicleData?.imageUrl"
-          class="w-64 h-64 object-cover rounded-xl shadow-md"
-          mat-card-image
-        />
+    <div *ngIf="vehicleData" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
 
-        <!-- Review -->
-        <div class="w-full">
-          <h3 class="text-lg font-semibold text-gray-700 mb-2">
-            {{ 'general_review' | translate }}
-          </h3>
-          <p-rating [(ngModel)]="value" [readonly]="true"/>
+      <!-- Image header -->
+      <div class="relative h-72 bg-gray-100">
+        <img [src]="vehicleData.imageUrl || 'https://ecomovil-vehicle-images.s3.amazonaws.com/vehicles/default.jpg'"
+             [alt]="vehicleData.name"
+             class="w-full h-full object-cover"
+             onerror="this.src='https://via.placeholder.com/800x300?text=Sin+imagen'" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        <div class="absolute bottom-4 left-6">
+          <span class="bg-white/20 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full border border-white/30">
+            {{ vehicleData.type }}
+          </span>
         </div>
-
-        <!-- Contacto -->
-        <div class="w-full">
-          <h3 class="text-lg font-semibold text-gray-700 mb-2">
-            {{ 'contact' | translate }}
-          </h3>
-          <button
-            class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-200"
-            (click)="redirectToWhatsApp()">
-            📞 Chat WhatsApp
-          </button>
+        <div *ngIf="vehicleData.isAvailable" class="absolute top-4 right-4">
+          <span class="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full">Disponible</span>
         </div>
       </div>
 
-      <!-- Detalles -->
-      <div class="flex flex-col justify-center space-y-5 text-gray-800 text-lg">
-        <div>
-          <span class="font-semibold">{{ 'type' | translate }}:</span>
-          <span class="ml-2 uppercase">{{ vehicleData?.type }}</span>
+      <!-- Content -->
+      <div class="p-6 lg:p-8">
+        <div class="flex items-start justify-between mb-6">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800">{{ vehicleData.name }}</h1>
+            <p class="text-gray-400 text-sm mt-0.5">Año {{ vehicleData.year }}</p>
+          </div>
         </div>
-        <div>
-          <span class="font-semibold">{{ 'name' | translate }}:</span>
-          <span class="ml-2">{{ vehicleData?.name }}</span>
+
+        <!-- Details grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="bg-gray-50 rounded-xl p-4 text-center">
+            <p class="text-xs text-gray-400 mb-1">Tipo</p>
+            <p class="font-semibold text-gray-800 text-sm">{{ vehicleData.type }}</p>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-4 text-center">
+            <p class="text-xs text-gray-400 mb-1">Año</p>
+            <p class="font-semibold text-gray-800 text-sm">{{ vehicleData.year }}</p>
+          </div>
+          <div class="bg-green-50 rounded-xl p-4 text-center">
+            <p class="text-xs text-gray-400 mb-1">Precio venta</p>
+            <p class="font-bold text-green-600 text-sm">S/ {{ vehicleData.priceSell }}</p>
+          </div>
+          <div class="bg-green-50 rounded-xl p-4 text-center">
+            <p class="text-xs text-gray-400 mb-1">Renta / día</p>
+            <p class="font-bold text-green-600 text-sm">S/ {{ vehicleData.priceRent }}</p>
+          </div>
         </div>
-        <div>
-          <span class="font-semibold">{{ 'year' | translate }}:</span>
-          <span class="ml-2">{{ vehicleData?.year }}</span>
+
+        <!-- Description -->
+        <div *ngIf="vehicleData.description" class="mb-6">
+          <h3 class="text-sm font-semibold text-gray-700 mb-2">Descripción</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">{{ vehicleData.description }}</p>
         </div>
-        <div>
-          <span class="font-semibold">{{ 'price' | translate }}:</span>
-          <span class="ml-2">S/. {{ vehicleData?.priceSell }}</span>
-        </div>
+
+        <!-- CTA -->
+        <button
+          (click)="redirectToWhatsApp()"
+          class="w-full py-3.5 rounded-xl font-semibold text-white bg-green-500 hover:bg-green-600 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.847L0 24l6.335-1.51A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.898 0-3.665-.517-5.188-1.417L2.4 21.6l1.048-4.275A9.956 9.956 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+          </svg>
+          Contactar por WhatsApp
+        </button>
       </div>
     </div>
+
   </div>
 </section>

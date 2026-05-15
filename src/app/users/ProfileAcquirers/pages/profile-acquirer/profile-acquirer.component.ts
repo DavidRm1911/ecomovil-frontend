@@ -1,9 +1,8 @@
 import {HeaderComponent} from '../../../../public/components/header/header.component';
 import {Component, inject, OnInit} from '@angular/core';
 import {NgIf} from "@angular/common";
-import { MatCard, MatCardActions, MatCardAvatar, MatCardContent, MatCardHeader, MatCardTitle, MatCardSubtitle } from "@angular/material/card";
-import {MatButton} from "@angular/material/button";
 import {TranslateModule} from "@ngx-translate/core";
+import {RouterLink} from "@angular/router";
 import {UserService} from '../../../../auth/services/user.service';
 import {AuthenticationService} from '../../../../auth/services/authentication.service';
 import {LogoApiService} from '../../../../shared/services/logo-api.service';
@@ -13,16 +12,9 @@ import {LogoApiService} from '../../../../shared/services/logo-api.service';
   standalone: true,
   imports: [
     NgIf,
-    MatCard,
-    MatCardHeader,
-    MatCardContent,
-    MatCardActions,
-    MatCardAvatar,
-    MatCardTitle,
-    MatCardSubtitle,
-    MatButton,
     TranslateModule,
     HeaderComponent,
+    RouterLink,
   ],
   templateUrl: './profile-acquirer.component.html',
   styleUrl: './profile-acquirer.component.css'
