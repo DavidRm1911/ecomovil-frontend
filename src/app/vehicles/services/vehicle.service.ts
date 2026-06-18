@@ -30,10 +30,10 @@ export class VehicleService extends BaseService<Vehicle> {
     return this.http.post<{ url: string }>(`${this.basePath}/vehicles/upload-image`, formData);
   }
 
-  chat(message: string, lat?: number, lng?: number) {
+  chat(message: string, lat?: number, lng?: number, userName?: string, history?: { role: string; text: string }[]) {
     return this.http.post<{
       reply: string;
       suggestions: { id: number; name: string; type: string; priceSell: number; priceRent: number; imageUrl: string; distanceKm: number | null }[];
-    }>(`${this.basePath}/vehicles/chat`, { message, lat, lng });
+    }>(`${this.basePath}/vehicles/chat`, { message, lat, lng, userName, history });
   }
 }
