@@ -6,6 +6,7 @@ import {TranslateModule} from "@ngx-translate/core";
 import {VehicleService} from '../../../../vehicles/services/vehicle.service';
 import {LogoApiService} from '../../../../shared/services/logo-api.service';
 import {Vehicle} from '../../../../vehicles/model/vehicle.entity';
+import {ChatWidgetComponent} from '../../../../shared/components/chat-widget/chat-widget.component';
 
 
 @Component({
@@ -16,7 +17,8 @@ import {Vehicle} from '../../../../vehicles/model/vehicle.entity';
         NgIf,
         HeaderComponent,
         TranslateModule,
-        RouterLink
+        RouterLink,
+        ChatWidgetComponent
     ],
   templateUrl: './home-acquirer.component.html',
   styleUrl: './home-acquirer.component.css'

@@ -29,4 +29,11 @@ export class VehicleService extends BaseService<Vehicle> {
     formData.append('file', file);
     return this.http.post<{ url: string }>(`${this.basePath}/vehicles/upload-image`, formData);
   }
+
+  chat(message: string, lat?: number, lng?: number) {
+    return this.http.post<{
+      reply: string;
+      suggestions: { id: number; name: string; type: string; priceSell: number; priceRent: number; imageUrl: string; distanceKm: number | null }[];
+    }>(`${this.basePath}/vehicles/chat`, { message, lat, lng });
+  }
 }
