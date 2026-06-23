@@ -40,5 +40,77 @@
 
       </div>
     </div>
+
+    <!-- IoT Panel: visible only when a device is linked -->
+    <div *ngIf="vehicleData?.iotDeviceId" class="mt-6 border-2 rounded-lg p-4 space-y-4">
+      <h2 class="text-2xl font-bold text-customGreen">Panel IoT</h2>
+
+      <!-- Alert banner for fall/SOS -->
+      <div *ngIf="vehicleData?.fallDetected"
+           class="bg-red-100 border border-red-400 text-red-800 rounded px-4 py-3 flex items-center gap-2">
+        <span class="font-bold">⚠ ALERTA:</span> Caída detectada — bicicleta bloqueada automáticamente.
+        <button class="ml-auto bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1 rounded"
+                (click)="unlockVehicle()" [disabled]="iotLoading">
+          Desbloquear
+        </button>
+      </div>
+
+      <!-- Status row -->
+      <div class="grid grid-cols-2 gap-4 text-sm">
+        <div class="space-y-1">
+          <p class="font-semibold text-gray-600">Dispositivo</p>
+          <p class="font-mono text-gray-800">{{ vehicleData?.iotDeviceId }}</p>
+        </div>
+        <div class="space-y-1">
+          <p class="font-semibold text-gray-600">Estado</p>
+          <span [class]="vehicleData?.isLocked
+            ? 'inline-block bg-red-200 text-red-800 px-2 py-1 rounded text-xs font-bold'
+            : 'inline-block bg-green-200 text-green-800 px-2 py-1 rounded text-xs font-bold'">
+            {{ vehicleData?.isLocked ? 'BLOQUEADA' : 'DESBLOQUEADA' }}
+          </span>
+        </div>
+        <div class="space-y-1">
+          <p class="font-semibold text-gray-600">Última ubicación GPS</p>
+          <p *ngIf="vehicleData?.lat && vehicleData?.lng" class="font-mono text-xs text-gray-800">
+            {{ vehicleData?.lat | number:'1.6-6' }}, {{ vehicleData?.lng | number:'1.6-6' }}
+          </p>
+          <p *ngIf="!vehicleData?.lat || !vehicleData?.lng" class="text-gray-400 text-xs">
+            Sin señal GPS
+          </p>
+        </div>
+        <div class="space-y-1">
+          <p class="font-semibold text-gray-600">Última actualización</p>
+          <p class="text-xs text-gray-800">
+            {{ vehicleData?.lastIotUpdate ? (vehicleData!.lastIotUpdate! | date:'dd/MM/yy HH:mm:ss') : 'Sin datos' }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Lock / Unlock buttons -->
+      <div class="flex gap-3">
+        <button
+          (click)="lockVehicle()"
+          [disabled]="iotLoading || vehicleData?.isLocked"
+          class="flex-1 bg-red-500 hover:bg-red-700 disabled:opacity-50 text-white font-bold py-2 px-4 rounded">
+          {{ iotLoading ? 'Enviando...' : 'Bloquear' }}
+        </button>
+        <button
+          (click)="unlockVehicle()"
+          [disabled]="iotLoading || !vehicleData?.isLocked"
+          class="flex-1 bg-green-500 hover:bg-green-700 disabled:opacity-50 text-white font-bold py-2 px-4 rounded">
+          {{ iotLoading ? 'Enviando...' : 'Desbloquear' }}
+        </button>
+      </div>
+
+      <p *ngIf="iotError" class="text-red-600 text-sm">{{ iotError }}</p>
+      <p class="text-xs text-gray-400">Estado actualizado automáticamente cada 10 segundos.</p>
+    </div>
+
+    <!-- Placeholder when no device linked -->
+    <div *ngIf="vehicleData && !vehicleData.iotDeviceId"
+         class="mt-6 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center text-gray-400 text-sm">
+      Sin dispositivo IoT vinculado. Conecta un ESP32 EcoMovil para habilitar el rastreo GPS y bloqueo remoto.
+    </div>
+
   </div>
 </section>

@@ -36,4 +36,12 @@ export class VehicleService extends BaseService<Vehicle> {
       suggestions: { id: number; name: string; type: string; priceSell: number; priceRent: number; imageUrl: string; distanceKm: number | null }[];
     }>(`${this.basePath}/vehicles/chat`, { message, lat, lng, userName, history });
   }
+
+  lockVehicle(vehicleId: number) {
+    return this.http.post<Vehicle>(`${this.basePath}/vehicles/${vehicleId}/lock`, {});
+  }
+
+  unlockVehicle(vehicleId: number) {
+    return this.http.post<Vehicle>(`${this.basePath}/vehicles/${vehicleId}/unlock`, {});
+  }
 }

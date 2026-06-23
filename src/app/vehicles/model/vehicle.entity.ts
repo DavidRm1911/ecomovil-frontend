@@ -31,6 +31,11 @@ export class Vehicle {
   lng: number;
   description: string;
   studentId: number;
+  // IoT fields
+  iotDeviceId: string | null;
+  isLocked: boolean;
+  fallDetected: boolean;
+  lastIotUpdate: string | null;
 
   constructor(vehicle:{
     id?: number,
@@ -45,7 +50,11 @@ export class Vehicle {
     lat?: number,
     lng?: number
     description?: string;
-    studentId?: number
+    studentId?: number;
+    iotDeviceId?: string | null;
+    isLocked?: boolean;
+    fallDetected?: boolean;
+    lastIotUpdate?: string | null;
   }){
     this.id = vehicle.id || 0;
     this.name = vehicle.name || '';
@@ -60,5 +69,9 @@ export class Vehicle {
     this.lng = vehicle.lng || 0;
     this.description = vehicle.description || "";
     this.studentId = vehicle.studentId || 0;
+    this.iotDeviceId = vehicle.iotDeviceId ?? null;
+    this.isLocked = vehicle.isLocked ?? false;
+    this.fallDetected = vehicle.fallDetected ?? false;
+    this.lastIotUpdate = vehicle.lastIotUpdate ?? null;
   }
 }
