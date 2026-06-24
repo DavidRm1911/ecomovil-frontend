@@ -1,6 +1,6 @@
 import {Component, inject, OnInit, OnDestroy} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {UpperCasePipe, DatePipe, NgIf} from "@angular/common";
+import {UpperCasePipe, DatePipe, NgIf, DecimalPipe} from "@angular/common";
 import {Vehicle} from "../../model/vehicle.entity";
 import { VehicleService } from '../../services/vehicle.service';
 import {MatCardImage} from "@angular/material/card";
@@ -8,6 +8,7 @@ import {RatingModule} from "primeng/rating";
 import {HeaderComponent} from "../../../public/components/header/header.component";
 import {TranslateModule} from "@ngx-translate/core";
 import {LogoApiService} from '../../../shared/services/logo-api.service';
+import {GoogleMap, MapMarker} from "@angular/google-maps";
 
 @Component({
   selector: 'app-vehicle-details',
@@ -19,9 +20,12 @@ import {LogoApiService} from '../../../shared/services/logo-api.service';
     RatingModule,
     UpperCasePipe,
     DatePipe,
+    DecimalPipe,
     NgIf,
     TranslateModule,
-    HeaderComponent
+    HeaderComponent,
+    GoogleMap,
+    MapMarker
   ],
   templateUrl: './vehicle-details.component.html',
   styleUrl: './vehicle-details.component.css'
@@ -79,6 +83,21 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
       next: (updated) => { this.vehicleData = updated; this.iotLoading = false; },
       error: (err) => { this.iotError = 'Error al desbloquear'; this.iotLoading = false; console.error(err); }
     });
+  }
+
+  get hasIotGps(): boolean {
+    return !!(this.vehicleData?.lat && this.vehicleData?.lng
+              && this.vehicleData.lat !== 0 && this.vehicleData.lng !== 0);
+  }
+
+  get iotMapCenter(): google.maps.LatLngLiteral {
+    return this.hasIotGps
+      ? { lat: this.vehicleData!.lat, lng: this.vehicleData!.lng }
+      : { lat: -12.0464, lng: -77.0428 }; // Lima por defecto
+  }
+
+  get iotMarkerPosition(): google.maps.LatLngLiteral {
+    return { lat: this.vehicleData!.lat, lng: this.vehicleData!.lng };
   }
 
   redirectToWhatsApp() {

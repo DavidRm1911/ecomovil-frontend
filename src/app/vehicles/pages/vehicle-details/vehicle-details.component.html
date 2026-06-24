@@ -71,11 +71,9 @@
         </div>
         <div class="space-y-1">
           <p class="font-semibold text-gray-600">Última ubicación GPS</p>
-          <p *ngIf="vehicleData?.lat && vehicleData?.lng" class="font-mono text-xs text-gray-800">
+          <p *ngIf="!hasIotGps" class="text-gray-400 text-xs">Sin señal GPS aún</p>
+          <p *ngIf="hasIotGps" class="font-mono text-xs text-gray-500">
             {{ vehicleData?.lat | number:'1.6-6' }}, {{ vehicleData?.lng | number:'1.6-6' }}
-          </p>
-          <p *ngIf="!vehicleData?.lat || !vehicleData?.lng" class="text-gray-400 text-xs">
-            Sin señal GPS
           </p>
         </div>
         <div class="space-y-1">
@@ -84,6 +82,17 @@
             {{ vehicleData?.lastIotUpdate ? (vehicleData!.lastIotUpdate! | date:'dd/MM/yy HH:mm:ss') : 'Sin datos' }}
           </p>
         </div>
+      </div>
+
+      <!-- Mapa GPS (última ubicación conocida) -->
+      <div *ngIf="hasIotGps" class="rounded-lg overflow-hidden border border-gray-200">
+        <p class="text-xs text-gray-500 px-2 py-1 bg-gray-50">Última ubicación conocida</p>
+        <google-map
+          class="w-full h-48"
+          [center]="iotMapCenter"
+          [zoom]="15">
+          <map-marker [position]="iotMarkerPosition"></map-marker>
+        </google-map>
       </div>
 
       <!-- Lock / Unlock buttons -->
