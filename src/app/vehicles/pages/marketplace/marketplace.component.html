@@ -1,0 +1,33 @@
+<app-header></app-header>
+
+<section class="min-h-screen bg-gray-50">
+  <div class="bg-gradient-to-r from-green-600 to-green-500 px-6 py-10">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-3xl font-bold text-white">Marketplace P2P</h1>
+      <p class="text-green-100 mt-1 text-sm">Contacta directamente al proveedor para coordinar tu alquiler</p>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Buscar por nombre, tipo o proveedor…"
+      class="w-full max-w-md mb-6 px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-customGreen" />
+
+    <div *ngIf="loading" class="text-center py-24 text-gray-400">Cargando vehículos…</div>
+
+    <div *ngIf="!loading && filteredItems.length === 0" class="text-center py-24 text-gray-400">
+      No se encontraron vehículos disponibles.
+    </div>
+
+    <div *ngIf="!loading && filteredItems.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <app-vehicle-contact-card
+        *ngFor="let item of filteredItems"
+        [vehicle]="item.vehicle"
+        [ownerName]="item.ownerName"
+        [ownerPhone]="item.ownerPhone">
+      </app-vehicle-contact-card>
+    </div>
+  </div>
+</section>

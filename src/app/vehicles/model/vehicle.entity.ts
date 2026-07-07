@@ -36,6 +36,12 @@ export class Vehicle {
   isLocked: boolean;
   fallDetected: boolean;
   lastIotUpdate: string | null;
+  speedKmh: number | null;
+  panicActive: boolean;
+  geofenceCenterLat: number | null;
+  geofenceCenterLng: number | null;
+  geofenceRadiusM: number | null;
+  geofenceBreached: boolean;
 
   constructor(vehicle:{
     id?: number,
@@ -55,6 +61,12 @@ export class Vehicle {
     isLocked?: boolean;
     fallDetected?: boolean;
     lastIotUpdate?: string | null;
+    speedKmh?: number | null;
+    panicActive?: boolean;
+    geofenceCenterLat?: number | null;
+    geofenceCenterLng?: number | null;
+    geofenceRadiusM?: number | null;
+    geofenceBreached?: boolean;
   }){
     this.id = vehicle.id || 0;
     this.name = vehicle.name || '';
@@ -73,5 +85,11 @@ export class Vehicle {
     this.isLocked = vehicle.isLocked ?? false;
     this.fallDetected = vehicle.fallDetected ?? false;
     this.lastIotUpdate = vehicle.lastIotUpdate ?? null;
+    this.speedKmh = vehicle.speedKmh ?? null;
+    this.panicActive = vehicle.panicActive ?? false;
+    this.geofenceCenterLat = vehicle.geofenceCenterLat ?? null;
+    this.geofenceCenterLng = vehicle.geofenceCenterLng ?? null;
+    this.geofenceRadiusM = vehicle.geofenceRadiusM ?? null;
+    this.geofenceBreached = vehicle.geofenceBreached ?? false;
   }
 }

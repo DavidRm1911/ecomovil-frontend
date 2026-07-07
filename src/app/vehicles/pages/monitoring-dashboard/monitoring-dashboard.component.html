@@ -1,0 +1,43 @@
+<app-header></app-header>
+
+<section class="min-h-screen bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+
+    <div class="mb-6">
+      <h1 class="text-2xl sm:text-3xl font-bold text-customGreen">Monitoreo en tiempo real</h1>
+      <p class="text-gray-500 text-sm mt-1" *ngIf="vehicle">{{ vehicle.name }} · actualizado cada 3s</p>
+    </div>
+
+    <div *ngIf="!vehicle" class="text-center py-24 text-gray-400">Cargando telemetría…</div>
+
+    <div *ngIf="vehicle" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+      <!-- Mapa -->
+      <div class="lg:col-span-2 rounded-2xl overflow-hidden border border-gray-100 shadow-sm bg-white">
+        <google-map class="w-full h-[420px] block" [center]="mapCenter" [zoom]="zoom">
+          <map-marker [position]="mapCenter"></map-marker>
+        </google-map>
+      </div>
+
+      <!-- KPIs: velocímetro + pánico -->
+      <div class="flex flex-col gap-6">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col items-center">
+          <app-speedometer [speedKmh]="vehicle.speedKmh"></app-speedometer>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex flex-col items-center gap-2">
+          <app-panic-button
+            [vehicleId]="vehicle.id"
+            [vehicleName]="vehicle.name"
+            [panicActive]="vehicle.panicActive">
+          </app-panic-button>
+        </div>
+      </div>
+
+      <!-- Feed de incidentes -->
+      <div class="lg:col-span-3">
+        <app-incident-feed [alerts]="alerts" title="Alertas de este vehículo"></app-incident-feed>
+      </div>
+    </div>
+  </div>
+</section>

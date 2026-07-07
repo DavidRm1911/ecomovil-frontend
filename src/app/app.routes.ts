@@ -20,6 +20,9 @@ import {
 } from './public/pages/register-university-student/register-university-student.component';
 import {ElectionComponent} from './public/pages/election/election.component';
 import {InteractiveMapComponent} from './public/pages/interactive-map/interactive-map.component';
+import {MonitoringDashboardComponent} from './vehicles/pages/monitoring-dashboard/monitoring-dashboard.component';
+import {AssetControlComponent} from './vehicles/pages/asset-control/asset-control.component';
+import {MarketplaceComponent} from './vehicles/pages/marketplace/marketplace.component';
 
 
 export const routes: Routes = [
@@ -56,4 +59,7 @@ export const routes: Routes = [
   { path: 'vehicleDetailsAcquirer/:id', component: VehicleDetailsAcquirerComponent, canActivate: [authenticationGuard] },
   {path: 'profileAdquiriente', component: ProfileAcquirerComponent, canActivate: [authenticationGuard]},
   {path: 'editProfileAcquirer', component: EditProfileAcquirerComponent, canActivate: [authenticationGuard]},
+  {path: 'monitoring/:id', component: MonitoringDashboardComponent, canActivate: [authenticationGuard]},
+  {path: 'assetControl/:id', component: AssetControlComponent, canActivate: [authenticationGuard]},
+  {path: 'marketplace', component: MarketplaceComponent, canActivate: [authenticationGuard]},
 ];

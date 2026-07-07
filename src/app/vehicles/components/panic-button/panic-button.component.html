@@ -1,0 +1,17 @@
+<div class="flex flex-col items-center gap-2">
+  <button
+    (click)="activatePanic()"
+    [disabled]="sending"
+    class="relative w-24 h-24 rounded-full bg-red-600 hover:bg-red-700 active:scale-95 text-white font-bold text-sm shadow-lg shadow-red-300/50 transition-all duration-150 disabled:opacity-60 flex items-center justify-center"
+    [class.animate-pulse]="panicActive">
+    <span *ngIf="!sending">SOS</span>
+    <span *ngIf="sending" class="text-xs">Enviando…</span>
+    <span *ngIf="panicActive" class="absolute -inset-1 rounded-full border-4 border-red-400 animate-ping"></span>
+  </button>
+  <p class="text-xs text-gray-500 text-center max-w-[10rem]">
+    Botón de pánico digital — refleja el botón físico rojo del vehículo
+  </p>
+  <p *ngIf="justSent" class="text-xs font-semibold text-red-600">
+    🆘 Alerta enviada al proveedor y soporte
+  </p>
+</div>

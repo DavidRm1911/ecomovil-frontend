@@ -1,0 +1,19 @@
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+  <p class="font-bold text-gray-800 mb-3">{{ title }}</p>
+
+  <div *ngIf="alerts.length === 0" class="text-center py-8 text-sm text-gray-400">
+    ✅ {{ emptyMessage }}
+  </div>
+
+  <ul *ngIf="alerts.length > 0" class="space-y-2 max-h-96 overflow-y-auto pr-1">
+    <li *ngFor="let alert of alerts"
+      class="flex items-start gap-3 border rounded-xl px-3 py-2.5 text-sm"
+      [ngClass]="severityClass(alert.severity)">
+      <span class="text-lg leading-none mt-0.5">{{ alert.icon }}</span>
+      <div class="flex-1">
+        <p class="font-medium">{{ alert.message }}</p>
+        <p class="text-xs opacity-70 mt-0.5">{{ alert.timestamp | date:'dd/MM/yy HH:mm:ss' }}</p>
+      </div>
+    </li>
+  </ul>
+</div>

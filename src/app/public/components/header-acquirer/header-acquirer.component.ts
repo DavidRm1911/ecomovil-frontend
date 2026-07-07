@@ -23,7 +23,8 @@ export class HeaderComponent {
   options = [
     {path: '/home', title: 'Home'},
     {path: '/interactiveMap', title: 'Map'},
-    {path:'/filter', title: 'Filter'}
+    {path:'/filter', title: 'Filter'},
+    {path:'/marketplace', title: 'Marketplace'}
   ]
   optionsLogin = [
     {path:'/login', title: 'Log Out'}

@@ -1,0 +1,36 @@
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+  <div class="flex items-center justify-between mb-3">
+    <div>
+      <p class="font-bold text-gray-800">Geocerca del vehículo</p>
+      <p class="text-xs text-gray-400 mt-0.5">Haz clic en el mapa para mover el centro permitido</p>
+    </div>
+    <span *ngIf="vehicle.geofenceBreached"
+      class="bg-red-100 text-red-700 text-xs font-semibold px-2.5 py-1 rounded-lg animate-pulse">
+      ⚠ Fuera de geocerca
+    </span>
+  </div>
+
+  <div class="rounded-xl overflow-hidden border border-gray-200 mb-4">
+    <google-map
+      class="w-full h-[280px] block"
+      [center]="center"
+      [zoom]="zoom"
+      (mapClick)="onMapClick($event)">
+      <map-circle [center]="circleCenter" [radius]="radiusM" [options]="circleOptions"></map-circle>
+      <map-marker *ngIf="vehicle.lat && vehicle.lng" [position]="{ lat: vehicle.lat, lng: vehicle.lng }"></map-marker>
+    </google-map>
+  </div>
+
+  <label class="block text-xs text-gray-500 mb-1">
+    Radio permitido: <span class="font-semibold text-gray-700">{{ radiusM }} m</span>
+  </label>
+  <input type="range" min="50" max="3000" step="50" [(ngModel)]="radiusM" class="w-full accent-customGreen mb-4" />
+
+  <button
+    (click)="save()"
+    [disabled]="saving"
+    class="w-full bg-customGreen hover:bg-green-600 text-white font-semibold py-2.5 rounded-xl transition-all duration-200 active:scale-95 disabled:opacity-60">
+    {{ saving ? 'Guardando…' : 'Guardar geocerca' }}
+  </button>
+  <p *ngIf="saved_" class="text-center text-xs font-semibold text-green-600 mt-2">✓ Geocerca guardada</p>
+</div>

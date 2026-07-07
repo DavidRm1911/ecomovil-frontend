@@ -76,6 +76,13 @@
           </svg>
           Contactar por WhatsApp
         </button>
+
+        <!-- Monitoreo IoT en tiempo real (solo si el vehículo tiene dispositivo vinculado) -->
+        <a *ngIf="vehicleData.iotDeviceId"
+           [routerLink]="['/monitoring', vehicleData.id]"
+           class="mt-3 w-full py-3.5 rounded-xl font-semibold text-customGreen border-2 border-customGreen hover:bg-green-50 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2">
+          📡 Ver monitoreo en tiempo real (GPS, velocidad, pánico)
+        </a>
       </div>
     </div>
 

@@ -9,6 +9,7 @@ import {HeaderComponent} from "../../../public/components/header/header.componen
 import {TranslateModule} from "@ngx-translate/core";
 import {LogoApiService} from '../../../shared/services/logo-api.service';
 import {GoogleMap, MapMarker} from "@angular/google-maps";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-vehicle-details',
@@ -25,7 +26,8 @@ import {GoogleMap, MapMarker} from "@angular/google-maps";
     TranslateModule,
     HeaderComponent,
     GoogleMap,
-    MapMarker
+    MapMarker,
+    RouterLink
   ],
   templateUrl: './vehicle-details.component.html',
   styleUrl: './vehicle-details.component.css'
