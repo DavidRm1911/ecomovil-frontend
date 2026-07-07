@@ -4,7 +4,6 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { VehicleService } from '../../../vehicles/services/vehicle.service';
 import { AuthenticationService } from '../../../auth/services/authentication.service';
-import { LogoApiService } from '../../services/logo-api.service';
 
 interface Suggestion {
   id: number;
@@ -33,7 +32,6 @@ const MAX_HISTORY_TURNS = 6;
 export class ChatWidgetComponent {
   private vehicleService = inject(VehicleService);
   private authService = inject(AuthenticationService);
-  private logoService = inject(LogoApiService);
 
   open = false;
   sending = false;
@@ -45,10 +43,6 @@ export class ChatWidgetComponent {
 
   constructor() {
     this.authService.currentUsername.subscribe(name => this.userName = name);
-  }
-
-  getImage(url: string): string {
-    return this.logoService.getUrlToLogo(url);
   }
 
   toggle() {

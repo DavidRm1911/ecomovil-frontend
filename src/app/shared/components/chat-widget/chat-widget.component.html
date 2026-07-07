@@ -48,10 +48,16 @@
            [routerLink]="['/vehicleDetailsAcquirer', s.id]"
            class="flex gap-3 bg-white border border-gray-200 rounded-xl p-2.5 hover:border-green-400 hover:shadow-sm transition group">
 
-          <!-- Imagen del vehículo -->
-          <img [src]="getImage(s.imageUrl)"
-               [alt]="s.name"
-               class="w-16 h-16 object-cover rounded-lg shrink-0 bg-gray-50" />
+          <!-- Imagen del vehículo (S3 URL directa) -->
+          <ng-container *ngIf="s.imageUrl; else vehicleIcon">
+            <img [src]="s.imageUrl" [alt]="s.name"
+                 class="w-16 h-16 object-cover rounded-lg shrink-0 bg-gray-100"
+                 (error)="$any($event.target).style.display='none'; $any($event.target).nextElementSibling.style.display='flex'"
+            /><div style="display:none" class="w-16 h-16 rounded-lg shrink-0 bg-gray-100 flex items-center justify-center text-2xl">🚲</div>
+          </ng-container>
+          <ng-template #vehicleIcon>
+            <div class="w-16 h-16 rounded-lg shrink-0 bg-gray-100 flex items-center justify-center text-2xl">🚲</div>
+          </ng-template>
 
           <!-- Info + botón -->
           <div class="flex flex-col justify-between flex-1 min-w-0">
