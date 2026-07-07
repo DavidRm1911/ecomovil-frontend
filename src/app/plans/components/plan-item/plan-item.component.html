@@ -16,33 +16,39 @@
     <h3 class="text-xl font-bold text-gray-800 mb-1">{{ plan.name }}</h3>
 
     <!-- Price -->
-    <div class="flex items-baseline gap-1 mb-4">
+    <div class="flex items-baseline gap-1 mb-1">
       <span class="text-3xl font-extrabold text-green-600">${{ plan.price }}</span>
       <span class="text-gray-400 text-sm">/mes</span>
     </div>
-
     <p class="text-xs text-gray-400 mb-5">Primer mes gratis, luego ${{ plan.price }}/mes</p>
 
-    <!-- Features -->
-    <ul class="space-y-2.5 mb-6 flex-1">
-      <li class="flex items-center gap-2 text-sm text-gray-600">
+    <!-- Features Bronze -->
+    <ul *ngIf="plan.name?.includes('Bronze') || plan.name?.includes('Bronce')" class="space-y-2.5 mb-6 flex-1">
+      <li *ngFor="let f of bronzeFeatures" class="flex items-center gap-2 text-sm text-gray-600">
         <svg class="w-4 h-4 text-green-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
         </svg>
-        <span *ngIf="Number(plan.postMonth) < 100">{{ plan.postMonth }} publicaciones/mes</span>
-        <span *ngIf="Number(plan.postMonth) >= 100">Publicaciones ilimitadas</span>
+        {{ f }}
       </li>
-      <li class="flex items-center gap-2 text-sm text-gray-600">
+    </ul>
+
+    <!-- Features Silver -->
+    <ul *ngIf="plan.name?.includes('Silver') || plan.name?.includes('Plata')" class="space-y-2.5 mb-6 flex-1">
+      <li *ngFor="let f of silverFeatures" class="flex items-center gap-2 text-sm text-gray-600">
         <svg class="w-4 h-4 text-green-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
         </svg>
-        {{ plan.assistanceType }} asistencia
+        {{ f }}
       </li>
-      <li *ngIf="plan.featured" class="flex items-center gap-2 text-sm text-gray-600">
+    </ul>
+
+    <!-- Features Gold -->
+    <ul *ngIf="plan.name?.includes('Gold') || plan.name?.includes('Oro')" class="space-y-2.5 mb-6 flex-1">
+      <li *ngFor="let f of goldFeatures" class="flex items-center gap-2 text-sm text-gray-600">
         <svg class="w-4 h-4 text-green-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
         </svg>
-        Publicaciones destacadas
+        {{ f }}
       </li>
     </ul>
 
