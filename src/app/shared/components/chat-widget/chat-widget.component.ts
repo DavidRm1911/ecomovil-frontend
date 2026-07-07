@@ -61,6 +61,11 @@ export class ChatWidgetComponent {
     }
   }
 
+  reset() {
+    this.turns = [];
+    this.input = '';
+  }
+
   send() {
     const message = this.input.trim();
     if (!message || this.sending) return;
