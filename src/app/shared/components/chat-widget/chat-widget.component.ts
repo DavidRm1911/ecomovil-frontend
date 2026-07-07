@@ -4,11 +4,22 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { VehicleService } from '../../../vehicles/services/vehicle.service';
 import { AuthenticationService } from '../../../auth/services/authentication.service';
+import { LogoApiService } from '../../services/logo-api.service';
+
+interface Suggestion {
+  id: number;
+  name: string;
+  type: string;
+  priceSell: number;
+  priceRent: number;
+  imageUrl: string;
+  distanceKm: number | null;
+}
 
 interface ChatTurn {
   from: 'user' | 'bot';
   text: string;
-  suggestions?: { id: number; name: string; priceSell: number; priceRent: number; distanceKm: number | null }[];
+  suggestions?: Suggestion[];
 }
 
 const MAX_HISTORY_TURNS = 6;
@@ -22,6 +33,7 @@ const MAX_HISTORY_TURNS = 6;
 export class ChatWidgetComponent {
   private vehicleService = inject(VehicleService);
   private authService = inject(AuthenticationService);
+  private logoService = inject(LogoApiService);
 
   open = false;
   sending = false;
@@ -35,12 +47,16 @@ export class ChatWidgetComponent {
     this.authService.currentUsername.subscribe(name => this.userName = name);
   }
 
+  getImage(url: string): string {
+    return this.logoService.getUrlToLogo(url);
+  }
+
   toggle() {
     this.open = !this.open;
     if (this.open && !this.lat && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => { this.lat = pos.coords.latitude; this.lng = pos.coords.longitude; },
-        () => {} // ponytail: location is optional, bot still works without it
+        () => {}
       );
     }
   }
@@ -49,7 +65,6 @@ export class ChatWidgetComponent {
     const message = this.input.trim();
     if (!message || this.sending) return;
 
-    // ponytail: history sent as-is, no server-side session storage.
     const history = this.turns.slice(-MAX_HISTORY_TURNS).map(t => ({
       role: t.from === 'bot' ? 'assistant' : 'user',
       text: t.text
