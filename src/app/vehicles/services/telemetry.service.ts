@@ -50,7 +50,7 @@ export class TelemetryService {
   streamVehicle(vehicleId: number): Observable<Vehicle> {
     return interval(POLL_MS).pipe(
       startWith(0),
-      switchMap(() => this.vehicleService.getbyId(vehicleId)),
+      switchMap(() => this.vehicleService.getVehiclePublic(vehicleId)),
       tap((vehicle) => this.deriveAlerts(vehicle)),
       catchError((err) => {
         console.error('Error polling telemetry:', err);
