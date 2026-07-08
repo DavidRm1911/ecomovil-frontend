@@ -1,6 +1,6 @@
 import {Component, inject, OnInit, OnDestroy} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {UpperCasePipe, DatePipe, NgIf, NgFor, DecimalPipe} from "@angular/common";
+import {UpperCasePipe, DatePipe, NgIf, NgFor, NgClass, DecimalPipe} from "@angular/common";
 import {Vehicle} from "../../model/vehicle.entity";
 import { VehicleService } from '../../services/vehicle.service';
 import {MatCardImage} from "@angular/material/card";
@@ -16,7 +16,7 @@ import {ReservationService, Reservation} from '../../../shared/services/reservat
   standalone: true,
   imports: [
     FormsModule, ReactiveFormsModule, MatCardImage, RatingModule,
-    UpperCasePipe, DatePipe, DecimalPipe, NgIf, NgFor,
+    UpperCasePipe, DatePipe, DecimalPipe, NgIf, NgFor, NgClass,
     TranslateModule, HeaderComponent, GoogleMap, MapMarker, RouterLink
   ],
   templateUrl: './vehicle-details.component.html',
@@ -28,6 +28,8 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
   protected iotError: string | null = null;
   protected reservations: Reservation[] = [];
   protected reservationsLoading = false;
+  protected calendarMonth = new Date().getMonth();
+  protected calendarYear = new Date().getFullYear();
 
   private vehicleService = inject(VehicleService);
   private reservationService = inject(ReservationService);
@@ -47,6 +49,7 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadVehicle();
     this.randomRating();
+    this.loadReservations();
     this.pollInterval = setInterval(() => this.loadVehicle(), 10000);
   }
 
@@ -86,6 +89,41 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
       next: (updated) => { this.vehicleData = updated; this.iotLoading = false; },
       error: (err) => { this.iotError = 'Error al desbloquear'; this.iotLoading = false; console.error(err); }
     });
+  }
+
+  get calendarMonthLabel(): string {
+    const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                    'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    return `${months[this.calendarMonth]} ${this.calendarYear}`;
+  }
+
+  get calendarDays(): Array<{day: number, dateStr: string, isBooked: boolean, isEmpty: boolean}> {
+    const days: Array<{day: number, dateStr: string, isBooked: boolean, isEmpty: boolean}> = [];
+    const firstDay = new Date(this.calendarYear, this.calendarMonth, 1);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    // Monday-start: Mon=0 .. Sun=6
+    const startPad = (firstDay.getDay() + 6) % 7;
+    for (let i = 0; i < startPad; i++) days.push({day: 0, dateStr: '', isBooked: false, isEmpty: true});
+    const daysInMonth = new Date(this.calendarYear, this.calendarMonth + 1, 0).getDate();
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateStr = `${this.calendarYear}-${pad(this.calendarMonth + 1)}-${pad(d)}`;
+      const isBooked = this.reservations.some(r =>
+        r.status?.toLowerCase() !== 'cancelled' && r.status?.toLowerCase() !== 'deleted' &&
+        dateStr >= r.startDate && dateStr <= r.endDate
+      );
+      days.push({day: d, dateStr, isBooked, isEmpty: false});
+    }
+    return days;
+  }
+
+  prevMonth(): void {
+    if (this.calendarMonth === 0) { this.calendarMonth = 11; this.calendarYear--; }
+    else this.calendarMonth--;
+  }
+
+  nextMonth(): void {
+    if (this.calendarMonth === 11) { this.calendarMonth = 0; this.calendarYear++; }
+    else this.calendarMonth++;
   }
 
   get hasIotGps(): boolean {

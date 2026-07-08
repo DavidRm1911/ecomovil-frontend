@@ -42,4 +42,10 @@ export class ReservationService {
   getMyReservations(): Observable<Reservation[]> {
     return this.http.get<Reservation[]>(`${this.base}/my-reservations`);
   }
+
+  getAvailability(vehicleId: number): Observable<{startDate: string, endDate: string}[]> {
+    return this.http.get<{startDate: string, endDate: string}[]>(
+      `${this.base}/vehicle/${vehicleId}/availability`
+    );
+  }
 }

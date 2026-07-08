@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {NgIf, DatePipe} from "@angular/common";
+import {NgIf, NgFor, DatePipe} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {Vehicle} from "../../model/vehicle.entity";
 import {VehicleService} from "../../services/vehicle.service";
@@ -12,7 +12,7 @@ import {ReservationService, Reservation} from '../../../shared/services/reservat
 @Component({
   selector: 'app-vehicle-details-acquirer',
   standalone: true,
-  imports: [NgIf, RouterLink, FormsModule, DatePipe, HeaderComponent, TranslateModule],
+  imports: [NgIf, NgFor, RouterLink, FormsModule, DatePipe, HeaderComponent, TranslateModule],
   templateUrl: './vehicle-details-acquirer.component.html',
   styleUrl: './vehicle-details-acquirer.component.css'
 })
@@ -26,6 +26,8 @@ export class VehicleDetailsAcquirerComponent implements OnInit {
   rentLoading = false;
   rentError: string | null = null;
   rentSuccess: Reservation | null = null;
+  bookedRanges: {startDate: string, endDate: string}[] = [];
+  availabilityLoading = false;
 
   private vehicleService = inject(VehicleService);
   private userService = inject(UserService);
@@ -45,6 +47,13 @@ export class VehicleDetailsAcquirerComponent implements OnInit {
 
   get rentTotal(): number {
     return this.rentDays * (this.vehicleData?.priceRent ?? 0);
+  }
+
+  get hasDateConflict(): boolean {
+    if (!this.rentStartDate || !this.rentEndDate) return false;
+    return this.bookedRanges.some(r =>
+      this.rentStartDate <= r.endDate && this.rentEndDate >= r.startDate
+    );
   }
 
   ngOnInit(): void {
@@ -85,6 +94,14 @@ export class VehicleDetailsAcquirerComponent implements OnInit {
     end.setDate(end.getDate() + 1);
     this.rentStartDate = start.toISOString().split('T')[0];
     this.rentEndDate = end.toISOString().split('T')[0];
+
+    if (this.vehicleData?.id) {
+      this.availabilityLoading = true;
+      this.reservationService.getAvailability(this.vehicleData.id).subscribe({
+        next: (ranges) => { this.bookedRanges = ranges; this.availabilityLoading = false; },
+        error: () => { this.availabilityLoading = false; }
+      });
+    }
   }
 
   closeRentModal() {
@@ -93,6 +110,10 @@ export class VehicleDetailsAcquirerComponent implements OnInit {
 
   confirmRent() {
     if (!this.vehicleData || !this.rentStartDate || !this.rentEndDate) return;
+    if (this.hasDateConflict) {
+      this.rentError = 'Estas fechas ya están reservadas. Elige otras fechas disponibles.';
+      return;
+    }
     this.rentLoading = true;
     this.rentError = null;
     this.reservationService.create(
