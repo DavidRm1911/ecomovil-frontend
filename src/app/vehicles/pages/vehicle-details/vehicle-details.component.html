@@ -128,6 +128,40 @@
 
   </div>
 
+  <!-- ====== PANEL MONITOREO EN TIEMPO REAL (solo si tiene IoT) ====== -->
+  <div *ngIf="vehicleData?.iotDeviceId" class="mt-8 border-t border-gray-200 pt-6 px-4 lg:px-8">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">📡 Monitoreo en tiempo real</h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <!-- Mapa GPS -->
+      <div class="lg:col-span-2 rounded-2xl overflow-hidden border border-gray-100 shadow-sm bg-white">
+        <google-map class="w-full h-64 block" [center]="iotMapCenter" [zoom]="15">
+          <map-marker *ngIf="hasIotGps" [position]="iotMarkerPosition"></map-marker>
+        </google-map>
+        <p *ngIf="!hasIotGps" class="text-center text-xs text-gray-400 py-4">Sin señal GPS aún</p>
+      </div>
+
+      <!-- Velocímetro + Pánico -->
+      <div class="flex flex-col gap-4">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col items-center">
+          <app-speedometer [speedKmh]="vehicleData!.speedKmh"></app-speedometer>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col items-center gap-2">
+          <app-panic-button
+            [vehicleId]="vehicleData!.id"
+            [vehicleName]="vehicleData!.name"
+            [panicActive]="vehicleData!.panicActive">
+          </app-panic-button>
+        </div>
+      </div>
+
+      <!-- Feed de alertas -->
+      <div class="lg:col-span-3">
+        <app-incident-feed [alerts]="alerts" title="Alertas de este vehículo"></app-incident-feed>
+      </div>
+    </div>
+  </div>
+
   <!-- ====== RESERVAS RECIBIDAS ====== -->
   <div class="mt-8 border-t border-gray-200 pt-6 px-4 lg:px-8">
 

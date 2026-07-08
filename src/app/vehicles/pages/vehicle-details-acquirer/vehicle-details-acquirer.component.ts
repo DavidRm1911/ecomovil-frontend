@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, OnDestroy} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {NgIf, NgFor, DatePipe} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {Vehicle} from "../../model/vehicle.entity";
@@ -8,27 +8,17 @@ import {TranslateModule} from "@ngx-translate/core";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {UserService} from '../../../auth/services/user.service';
 import {ReservationService, Reservation} from '../../../shared/services/reservation.service';
-import {TelemetryService} from '../../services/telemetry.service';
-import {IncidentAlert} from '../../model/incident-alert.entity';
-import {GoogleMap, MapMarker} from '@angular/google-maps';
-import {SpeedometerComponent} from '../../components/speedometer/speedometer.component';
-import {PanicButtonComponent} from '../../components/panic-button/panic-button.component';
-import {IncidentFeedComponent} from '../../../shared/components/incident-feed/incident-feed.component';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-vehicle-details-acquirer',
   standalone: true,
-  imports: [NgIf, NgFor, RouterLink, FormsModule, DatePipe, HeaderComponent, TranslateModule,
-            GoogleMap, MapMarker, SpeedometerComponent, PanicButtonComponent, IncidentFeedComponent],
+  imports: [NgIf, NgFor, RouterLink, FormsModule, DatePipe, HeaderComponent, TranslateModule],
   templateUrl: './vehicle-details-acquirer.component.html',
   styleUrl: './vehicle-details-acquirer.component.css'
 })
-export class VehicleDetailsAcquirerComponent implements OnInit, OnDestroy {
+export class VehicleDetailsAcquirerComponent implements OnInit {
   protected vehicleData: Vehicle | null = null;
   protected ownerPhone: string = '';
-  protected telemetryVehicle: Vehicle | null = null;
-  protected alerts: IncidentAlert[] = [];
 
   showRentModal = false;
   rentStartDate = '';
@@ -42,10 +32,7 @@ export class VehicleDetailsAcquirerComponent implements OnInit, OnDestroy {
   private vehicleService = inject(VehicleService);
   private userService = inject(UserService);
   private reservationService = inject(ReservationService);
-  private telemetryService = inject(TelemetryService);
   private route = inject(ActivatedRoute);
-  private telemetrySub?: Subscription;
-  private alertsSub?: Subscription;
 
   get today(): string {
     return new Date().toISOString().split('T')[0];
@@ -72,22 +59,7 @@ export class VehicleDetailsAcquirerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = idParam ? +idParam : null;
-    if (!id) return;
-    this.loadVehicle(id);
-    this.telemetryService.clearAlerts();
-    this.telemetrySub = this.telemetryService.streamVehicle(id).subscribe(v => this.telemetryVehicle = v);
-    this.alertsSub = this.telemetryService.alerts$.subscribe(a => this.alerts = a);
-  }
-
-  ngOnDestroy(): void {
-    this.telemetrySub?.unsubscribe();
-    this.alertsSub?.unsubscribe();
-  }
-
-  get mapCenter(): google.maps.LatLngLiteral {
-    return this.telemetryVehicle?.lat && this.telemetryVehicle?.lng
-      ? { lat: this.telemetryVehicle.lat, lng: this.telemetryVehicle.lng }
-      : { lat: -12.0464, lng: -77.0428 };
+    if (id) this.loadVehicle(id);
   }
 
   private loadVehicle(id: number) {

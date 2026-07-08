@@ -10,6 +10,12 @@ import {TranslateModule} from "@ngx-translate/core";
 import {GoogleMap, MapMarker} from "@angular/google-maps";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ReservationService, Reservation} from '../../../shared/services/reservation.service';
+import {TelemetryService} from '../../services/telemetry.service';
+import {IncidentAlert} from '../../model/incident-alert.entity';
+import {SpeedometerComponent} from '../../components/speedometer/speedometer.component';
+import {PanicButtonComponent} from '../../components/panic-button/panic-button.component';
+import {IncidentFeedComponent} from '../../../shared/components/incident-feed/incident-feed.component';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-vehicle-details',
@@ -17,7 +23,8 @@ import {ReservationService, Reservation} from '../../../shared/services/reservat
   imports: [
     FormsModule, ReactiveFormsModule, MatCardImage, RatingModule,
     UpperCasePipe, DatePipe, DecimalPipe, NgIf, NgFor, NgClass,
-    TranslateModule, HeaderComponent, GoogleMap, MapMarker, RouterLink
+    TranslateModule, HeaderComponent, GoogleMap, MapMarker, RouterLink,
+    SpeedometerComponent, PanicButtonComponent, IncidentFeedComponent
   ],
   templateUrl: './vehicle-details.component.html',
   styleUrl: './vehicle-details.component.css'
@@ -30,11 +37,14 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
   protected reservationsLoading = false;
   protected calendarMonth = new Date().getMonth();
   protected calendarYear = new Date().getFullYear();
+  protected alerts: IncidentAlert[] = [];
 
   private vehicleService = inject(VehicleService);
   private reservationService = inject(ReservationService);
+  private telemetryService = inject(TelemetryService);
   private route = inject(ActivatedRoute);
   private pollInterval: ReturnType<typeof setInterval> | null = null;
+  private alertsSub?: Subscription;
   value?: number;
 
   private get vehicleId(): number {
@@ -51,10 +61,13 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
     this.randomRating();
     this.loadReservations();
     this.pollInterval = setInterval(() => this.loadVehicle(), 10000);
+    this.telemetryService.clearAlerts();
+    this.alertsSub = this.telemetryService.alerts$.subscribe(a => this.alerts = a);
   }
 
   ngOnDestroy(): void {
     if (this.pollInterval) clearInterval(this.pollInterval);
+    this.alertsSub?.unsubscribe();
   }
 
   private loadVehicle() {
