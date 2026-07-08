@@ -1,33 +1,23 @@
 import {Component, inject, OnInit, OnDestroy} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {UpperCasePipe, DatePipe, NgIf, DecimalPipe} from "@angular/common";
+import {UpperCasePipe, DatePipe, NgIf, NgFor, DecimalPipe} from "@angular/common";
 import {Vehicle} from "../../model/vehicle.entity";
 import { VehicleService } from '../../services/vehicle.service';
 import {MatCardImage} from "@angular/material/card";
 import {RatingModule} from "primeng/rating";
 import {HeaderComponent} from "../../../public/components/header/header.component";
 import {TranslateModule} from "@ngx-translate/core";
-import {LogoApiService} from '../../../shared/services/logo-api.service';
 import {GoogleMap, MapMarker} from "@angular/google-maps";
-import {RouterLink} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ReservationService, Reservation} from '../../../shared/services/reservation.service';
 
 @Component({
   selector: 'app-vehicle-details',
   standalone: true,
   imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    MatCardImage,
-    RatingModule,
-    UpperCasePipe,
-    DatePipe,
-    DecimalPipe,
-    NgIf,
-    TranslateModule,
-    HeaderComponent,
-    GoogleMap,
-    MapMarker,
-    RouterLink
+    FormsModule, ReactiveFormsModule, MatCardImage, RatingModule,
+    UpperCasePipe, DatePipe, DecimalPipe, NgIf, NgFor,
+    TranslateModule, HeaderComponent, GoogleMap, MapMarker, RouterLink
   ],
   templateUrl: './vehicle-details.component.html',
   styleUrl: './vehicle-details.component.css'
@@ -36,34 +26,45 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
   protected vehicleData: Vehicle | null = null;
   protected iotLoading = false;
   protected iotError: string | null = null;
+  protected reservations: Reservation[] = [];
+  protected reservationsLoading = false;
 
-  private vehicleService: VehicleService = inject(VehicleService);
-  private Logo = inject(LogoApiService);
+  private vehicleService = inject(VehicleService);
+  private reservationService = inject(ReservationService);
+  private route = inject(ActivatedRoute);
   private pollInterval: ReturnType<typeof setInterval> | null = null;
   value?: number;
+
+  private get vehicleId(): number {
+    const param = this.route.snapshot.paramMap.get('id');
+    return param ? +param : 1;
+  }
 
   randomRating() {
     this.value = Math.floor(Math.random() * 6);
   }
 
-  getLogoUrl(url: string | undefined) {
-    return this.Logo.getUrlToLogo(url);
-  }
-
   ngOnInit(): void {
-    this.getVehiclebyId(1);
+    this.loadVehicle();
     this.randomRating();
-    // Poll IoT status every 10 seconds to show fresh GPS + lock state
-    this.pollInterval = setInterval(() => this.getVehiclebyId(this.vehicleData?.id ?? 1), 10000);
+    this.pollInterval = setInterval(() => this.loadVehicle(), 10000);
   }
 
   ngOnDestroy(): void {
     if (this.pollInterval) clearInterval(this.pollInterval);
   }
 
-  private getVehiclebyId(id: number) {
-    this.vehicleService.getbyId(id).subscribe((response: Vehicle) => {
+  private loadVehicle() {
+    this.vehicleService.getbyId(this.vehicleId).subscribe((response: Vehicle) => {
       this.vehicleData = response;
+    });
+  }
+
+  loadReservations() {
+    this.reservationsLoading = true;
+    this.reservationService.getByVehicle(this.vehicleId).subscribe({
+      next: (res) => { this.reservations = res; this.reservationsLoading = false; },
+      error: () => { this.reservationsLoading = false; }
     });
   }
 
@@ -95,7 +96,7 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
   get iotMapCenter(): google.maps.LatLngLiteral {
     return this.hasIotGps
       ? { lat: this.vehicleData!.lat, lng: this.vehicleData!.lng }
-      : { lat: -12.0464, lng: -77.0428 }; // Lima por defecto
+      : { lat: -12.0464, lng: -77.0428 };
   }
 
   get iotMarkerPosition(): google.maps.LatLngLiteral {

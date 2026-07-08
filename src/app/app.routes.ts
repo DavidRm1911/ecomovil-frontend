@@ -28,6 +28,7 @@ import {MarketplaceComponent} from './vehicles/pages/marketplace/marketplace.com
 export const routes: Routes = [
   {path:'myVehicles', component: VehiclesComponent, canActivate: [authenticationGuard]},
   {path: 'postVehicle', component: VehiclePostComponent, canActivate: [authenticationGuard]},
+  {path: 'vehicleDetails/:id', component: VehicleDetailsComponent, canActivate: [authenticationGuard]},
   {path: 'vehicleDetails', component: VehicleDetailsComponent, canActivate: [authenticationGuard]},
   { path: 'plans', component: PlanesPageComponent, canActivate: [authenticationGuard]},
   {path: 'login', component: LogInComponent},
