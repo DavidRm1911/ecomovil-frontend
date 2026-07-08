@@ -23,6 +23,7 @@ import {InteractiveMapComponent} from './public/pages/interactive-map/interactiv
 import {MonitoringDashboardComponent} from './vehicles/pages/monitoring-dashboard/monitoring-dashboard.component';
 import {AssetControlComponent} from './vehicles/pages/asset-control/asset-control.component';
 import {MarketplaceComponent} from './vehicles/pages/marketplace/marketplace.component';
+import {MyReservationsComponent} from './vehicles/pages/my-reservations/my-reservations.component';
 
 
 export const routes: Routes = [
@@ -63,4 +64,5 @@ export const routes: Routes = [
   {path: 'monitoring/:id', component: MonitoringDashboardComponent, canActivate: [authenticationGuard]},
   {path: 'assetControl/:id', component: AssetControlComponent, canActivate: [authenticationGuard]},
   {path: 'marketplace', component: MarketplaceComponent, canActivate: [authenticationGuard]},
+  {path: 'myReservations', component: MyReservationsComponent, canActivate: [authenticationGuard]},
 ];

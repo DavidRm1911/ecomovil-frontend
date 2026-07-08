@@ -48,4 +48,10 @@ export class ReservationService {
       `${this.base}/vehicle/${vehicleId}/availability`
     );
   }
+
+  cancel(reservationId: number): Observable<Reservation> {
+    return this.http.put<Reservation>(`${this.base}/${reservationId}/status`, 'cancelled', {
+      headers: { 'Content-Type': 'text/plain' }
+    });
+  }
 }
