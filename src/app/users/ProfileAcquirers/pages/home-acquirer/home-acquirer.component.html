@@ -35,10 +35,10 @@
 
         <!-- Image -->
         <div class="relative h-44 bg-gray-100 overflow-hidden">
-          <img [src]="vehicle.imageUrl || 'https://ecomovil-vehicle-images.s3.amazonaws.com/vehicles/default.jpg'"
+          <img [src]="vehicle.imageUrl || 'assets/vehicle-placeholder.svg'"
                [alt]="vehicle.name"
                class="w-full h-full object-cover"
-               onerror="this.src='https://ecomovil-vehicle-images.s3.amazonaws.com/vehicles/default.jpg'" />
+               onerror="this.onerror=null;this.src='assets/vehicle-placeholder.svg'" />
           <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-green-700 text-xs font-semibold px-2.5 py-1 rounded-lg">
             {{ vehicle.type }}
           </span>

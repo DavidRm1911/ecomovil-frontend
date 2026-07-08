@@ -16,10 +16,10 @@
 
       <!-- Image header -->
       <div class="relative h-72 bg-gray-100">
-        <img [src]="vehicleData.imageUrl || 'https://ecomovil-vehicle-images.s3.amazonaws.com/vehicles/default.jpg'"
+        <img [src]="vehicleData.imageUrl || 'assets/vehicle-placeholder.svg'"
              [alt]="vehicleData.name"
              class="w-full h-full object-cover"
-             onerror="this.src='https://ecomovil-vehicle-images.s3.amazonaws.com/vehicles/default.jpg'" />
+             onerror="this.onerror=null;this.src='assets/vehicle-placeholder.svg'" />
         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
         <div class="absolute bottom-4 left-6">
           <span class="bg-white/20 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full border border-white/30 capitalize">

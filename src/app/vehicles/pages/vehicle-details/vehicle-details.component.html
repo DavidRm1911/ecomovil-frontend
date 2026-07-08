@@ -24,7 +24,8 @@
       <div class="flex flex-col items-start px-4 py-4 space-y-4">
         <div class="w-full flex justify-center mb-4">
           <img [alt]="vehicleData?.name"
-               [src]="vehicleData?.imageUrl"
+               [src]="vehicleData?.imageUrl || 'assets/vehicle-placeholder.svg'"
+               onerror="this.onerror=null;this.src='assets/vehicle-placeholder.svg'"
                class="w-32 h-32 object-cover rounded-lg"
                mat-card-image />
         </div>

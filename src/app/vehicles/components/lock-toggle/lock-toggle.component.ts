@@ -36,7 +36,10 @@ export class LockToggleComponent {
         this.changed.emit(updated);
       },
       error: (err) => {
-        this.error = this.vehicle.isLocked ? 'No se pudo desbloquear el vehículo.' : 'No se pudo bloquear el vehículo.';
+        const is401or403 = err?.status === 401 || err?.status === 403;
+        this.error = is401or403
+          ? 'Sesión expirada. Cierra sesión y vuelve a iniciar sesión.'
+          : (this.vehicle.isLocked ? 'No se pudo desbloquear el vehículo.' : 'No se pudo bloquear el vehículo.');
         this.loading = false;
         console.error(err);
       }
