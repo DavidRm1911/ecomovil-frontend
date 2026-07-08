@@ -43,7 +43,7 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
   private reservationService = inject(ReservationService);
   private telemetryService = inject(TelemetryService);
   private route = inject(ActivatedRoute);
-  private pollInterval: ReturnType<typeof setInterval> | null = null;
+  private telemetrySub?: Subscription;
   private alertsSub?: Subscription;
   value?: number;
 
@@ -57,23 +57,19 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadVehicle();
     this.randomRating();
     this.loadReservations();
-    this.pollInterval = setInterval(() => this.loadVehicle(), 10000);
     this.telemetryService.clearAlerts();
+    // streamVehicle() polls every 3 s AND calls deriveAlerts() on each tick
+    // so the owner sees fall/panic/geofence/overspeed alerts in real time
+    this.telemetrySub = this.telemetryService.streamVehicle(this.vehicleId)
+      .subscribe(v => { this.vehicleData = v; });
     this.alertsSub = this.telemetryService.alerts$.subscribe(a => this.alerts = a);
   }
 
   ngOnDestroy(): void {
-    if (this.pollInterval) clearInterval(this.pollInterval);
+    this.telemetrySub?.unsubscribe();
     this.alertsSub?.unsubscribe();
-  }
-
-  private loadVehicle() {
-    this.vehicleService.getbyId(this.vehicleId).subscribe((response: Vehicle) => {
-      this.vehicleData = response;
-    });
   }
 
   loadReservations() {

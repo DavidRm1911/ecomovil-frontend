@@ -109,14 +109,25 @@ export class TelemetryService {
     const previous = this.lastSeen.get(vehicle.id);
     this.lastSeen.set(vehicle.id, vehicle);
 
-    // Impact/fall — MPU6050 accelerometer/gyroscope threshold breach.
-    if (vehicle.fallDetected && !previous?.fallDetected) {
+    // Panic button (SOS) — takes priority over fall so we don't double-alert.
+    if (vehicle.panicActive && !previous?.panicActive) {
+      this.pushAlert(new IncidentAlert({
+        vehicleId: vehicle.id,
+        vehicleName: vehicle.name,
+        type: 'PANIC',
+        severity: 'critical',
+        message: `🚨 "${vehicle.name}" — Botón de pánico activado. ¡Asistencia requerida de inmediato!`
+      }));
+    }
+
+    // Impact/fall — MPU6050 accelerometer/gyroscope threshold breach (not a SOS press).
+    if (vehicle.fallDetected && !previous?.fallDetected && !vehicle.panicActive) {
       this.pushAlert(new IncidentAlert({
         vehicleId: vehicle.id,
         vehicleName: vehicle.name,
         type: 'IMPACT',
         severity: 'critical',
-        message: `Impacto o caída detectada en "${vehicle.name}" (giroscopio/acelerómetro).`
+        message: `⚠ Impacto o caída detectada en "${vehicle.name}" (giroscopio/acelerómetro).`
       }));
     }
 
