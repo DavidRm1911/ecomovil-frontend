@@ -44,4 +44,20 @@ export class VehicleService extends BaseService<Vehicle> {
   unlockVehicle(vehicleId: number) {
     return this.http.post<Vehicle>(`${this.basePath}/vehicles/${vehicleId}/unlock`, {});
   }
+
+  getTelemetryHistory(vehicleId: number, limit = 200) {
+    return this.http.get<TelemetryPoint[]>(
+      `${this.basePath}/vehicles/${vehicleId}/telemetry/history?limit=${limit}`
+    );
+  }
+}
+
+export interface TelemetryPoint {
+  ts: number;
+  lat: number;
+  lng: number;
+  speed_kmh: number;
+  is_locked: boolean;
+  fall_detected: boolean;
+  panic_active: boolean;
 }

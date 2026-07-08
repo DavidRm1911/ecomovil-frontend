@@ -2,12 +2,12 @@ import {Component, inject, OnInit, OnDestroy} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {UpperCasePipe, DatePipe, NgIf, NgFor, NgClass, DecimalPipe} from "@angular/common";
 import {Vehicle} from "../../model/vehicle.entity";
-import { VehicleService } from '../../services/vehicle.service';
+import { VehicleService, TelemetryPoint } from '../../services/vehicle.service';
 import {MatCardImage} from "@angular/material/card";
 import {RatingModule} from "primeng/rating";
 import {HeaderComponent} from "../../../public/components/header/header.component";
 import {TranslateModule} from "@ngx-translate/core";
-import {GoogleMap, MapMarker} from "@angular/google-maps";
+import {GoogleMap, MapMarker, MapPolyline} from "@angular/google-maps";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import {ReservationService, Reservation} from '../../../shared/services/reservation.service';
 import {TelemetryService} from '../../services/telemetry.service';
@@ -23,7 +23,7 @@ import {Subscription} from 'rxjs';
   imports: [
     FormsModule, ReactiveFormsModule, MatCardImage, RatingModule,
     UpperCasePipe, DatePipe, DecimalPipe, NgIf, NgFor, NgClass,
-    TranslateModule, HeaderComponent, GoogleMap, MapMarker, RouterLink,
+    TranslateModule, HeaderComponent, GoogleMap, MapMarker, MapPolyline, RouterLink,
     SpeedometerComponent, PanicButtonComponent, IncidentFeedComponent
   ],
   templateUrl: './vehicle-details.component.html',
@@ -38,6 +38,12 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
   protected calendarMonth = new Date().getMonth();
   protected calendarYear = new Date().getFullYear();
   protected alerts: IncidentAlert[] = [];
+  protected trailPath: google.maps.LatLngLiteral[] = [];
+  protected trailOptions: google.maps.PolylineOptions = {
+    strokeColor: '#16a34a',
+    strokeWeight: 3,
+    strokeOpacity: 0.7
+  };
 
   private vehicleService = inject(VehicleService);
   private reservationService = inject(ReservationService);
@@ -59,9 +65,8 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.randomRating();
     this.loadReservations();
+    this.loadTrail();
     this.telemetryService.clearAlerts();
-    // streamVehicle() polls every 3 s AND calls deriveAlerts() on each tick
-    // so the owner sees fall/panic/geofence/overspeed alerts in real time
     this.telemetrySub = this.telemetryService.streamVehicle(this.vehicleId)
       .subscribe(v => { this.vehicleData = v; });
     this.alertsSub = this.telemetryService.alerts$.subscribe(a => this.alerts = a);
@@ -79,6 +84,20 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
       error: () => { this.reservationsLoading = false; }
     });
   }
+
+  loadTrail() {
+    this.vehicleService.getTelemetryHistory(this.vehicleId, 200).subscribe({
+      next: (points) => {
+        // Points come newest-first from the API; reverse for chronological order on map
+        this.trailPath = [...points].reverse()
+          .filter(p => p.lat && p.lng)
+          .map(p => ({ lat: p.lat, lng: p.lng }));
+      },
+      error: () => {}
+    });
+  }
+
+  get hasTrail(): boolean { return this.trailPath.length > 1; }
 
   lockVehicle(): void {
     if (!this.vehicleData) return;
@@ -110,7 +129,6 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
     const days: Array<{day: number, dateStr: string, isBooked: boolean, isEmpty: boolean}> = [];
     const firstDay = new Date(this.calendarYear, this.calendarMonth, 1);
     const pad = (n: number) => String(n).padStart(2, '0');
-    // Monday-start: Mon=0 .. Sun=6
     const startPad = (firstDay.getDay() + 6) % 7;
     for (let i = 0; i < startPad; i++) days.push({day: 0, dateStr: '', isBooked: false, isEmpty: true});
     const daysInMonth = new Date(this.calendarYear, this.calendarMonth + 1, 0).getDate();

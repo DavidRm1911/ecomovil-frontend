@@ -137,9 +137,13 @@
       <!-- Mapa GPS -->
       <div class="lg:col-span-2 rounded-2xl overflow-hidden border border-gray-100 shadow-sm bg-white">
         <google-map class="w-full h-64 block" [center]="iotMapCenter" [zoom]="15">
+          <map-polyline *ngIf="hasTrail" [path]="trailPath" [options]="trailOptions"></map-polyline>
           <map-marker *ngIf="hasIotGps" [position]="iotMarkerPosition"></map-marker>
         </google-map>
         <p *ngIf="!hasIotGps" class="text-center text-xs text-gray-400 py-4">Sin señal GPS aún</p>
+        <p *ngIf="hasTrail" class="text-center text-xs text-gray-400 pb-2">
+          🟢 Trayectoria: últimos {{ trailPath.length }} puntos GPS
+        </p>
       </div>
 
       <!-- Velocímetro + Pánico -->
