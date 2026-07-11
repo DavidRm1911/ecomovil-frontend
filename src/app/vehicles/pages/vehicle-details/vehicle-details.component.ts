@@ -160,9 +160,10 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
   }
 
   get iotMapCenter(): google.maps.LatLngLiteral {
-    return this.hasIotGps
-      ? { lat: this.vehicleData!.lat, lng: this.vehicleData!.lng }
-      : { lat: -12.0464, lng: -77.0428 };
+    // Prefer latest trail point so the polyline is visible; fall back to vehicle GPS or Lima default
+    if (this.trailPath.length > 0) return this.trailPath[this.trailPath.length - 1];
+    if (this.hasIotGps) return { lat: this.vehicleData!.lat, lng: this.vehicleData!.lng };
+    return { lat: -12.0464, lng: -77.0428 };
   }
 
   get iotMarkerPosition(): google.maps.LatLngLiteral {
