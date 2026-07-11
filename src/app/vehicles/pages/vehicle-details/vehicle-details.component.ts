@@ -90,8 +90,9 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
       next: (points) => {
         // Points come newest-first from the API; reverse for chronological order on map
         this.trailPath = [...points].reverse()
-          .filter(p => p.lat && p.lng)
-          .map(p => ({ lat: p.lat, lng: p.lng }));
+          .filter(p => typeof p.lat === 'number' && isFinite(p.lat)
+                    && typeof p.lng === 'number' && isFinite(p.lng))
+          .map(p => ({ lat: Number(p.lat), lng: Number(p.lng) }));
       },
       error: () => {}
     });
@@ -165,7 +166,9 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
   }
 
   get iotMarkerPosition(): google.maps.LatLngLiteral {
-    return { lat: this.vehicleData!.lat, lng: this.vehicleData!.lng };
+    const lat = this.vehicleData?.lat ?? -12.0464;
+    const lng = this.vehicleData?.lng ?? -77.0428;
+    return { lat: Number(lat), lng: Number(lng) };
   }
 
   redirectToWhatsApp() {
