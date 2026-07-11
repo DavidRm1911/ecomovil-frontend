@@ -2,7 +2,7 @@ import {HeaderComponent} from '../../components/header/header.component';
 import {Component, inject, OnInit} from '@angular/core';
 import {GoogleMap, MapMarker} from "@angular/google-maps";
 import {Router} from "@angular/router";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf, DecimalPipe} from "@angular/common";
 import {TranslateModule} from "@ngx-translate/core";
 import {Vehicle} from '../../../vehicles/model/vehicle.entity';
 import {VehicleService} from '../../../vehicles/services/vehicle.service';
@@ -10,7 +10,7 @@ import {VehicleService} from '../../../vehicles/services/vehicle.service';
 @Component({
   selector: 'app-interactive-map',
   standalone: true,
-    imports: [GoogleMap, MapMarker, NgForOf, HeaderComponent, TranslateModule],
+  imports: [GoogleMap, MapMarker, NgForOf, NgIf, DecimalPipe, HeaderComponent, TranslateModule],
   templateUrl: './interactive-map.component.html',
   styleUrl: './interactive-map.component.css'
 })
@@ -18,6 +18,8 @@ export class InteractiveMapComponent implements OnInit {
   center: google.maps.LatLngLiteral = { lat: -12.098089934437155, lng: -77.05815168994613 };
   zoom = 12;
   display: google.maps.LatLngLiteral | undefined;
+  loading = false;
+  markerOptions: google.maps.MarkerOptions = {};
   protected vehicleData: Vehicle[] = [];
 
   private vehicleService: VehicleService = inject(VehicleService);
@@ -45,11 +47,16 @@ export class InteractiveMapComponent implements OnInit {
   }
 
   private loadMarkers() {
-    this.vehicleService.getAll().subscribe((response: Vehicle[]) => {
-      this.vehicleData = response;
-      response.forEach(vehicle => {
-        this.addMarkerAtPosition(vehicle.lat, vehicle.lng, vehicle.id);
-      });
+    this.loading = true;
+    this.vehicleService.getAll().subscribe({
+      next: (response: Vehicle[]) => {
+        this.vehicleData = response;
+        response.forEach(vehicle => {
+          this.addMarkerAtPosition(vehicle.lat, vehicle.lng, vehicle.id);
+        });
+        this.loading = false;
+      },
+      error: () => { this.loading = false; }
     });
   }
 

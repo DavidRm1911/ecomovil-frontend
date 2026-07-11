@@ -1,40 +1,89 @@
-<section id="vehiclesSection" class="relative min-h-screen">
-  <app-header></app-header>
+<app-header></app-header>
 
-  <!-- Fondo decorativo -->
-  <div class="absolute top-0 left-0 w-full h-full z-0">
-    <img src="assets/background.png" class="w-full h-full object-cover" alt="fondo decorativo" />
+<section class="min-h-screen bg-gray-50">
+
+  <!-- Hero banner -->
+  <div class="bg-gradient-to-r from-green-600 to-green-500 px-6 py-10">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-3xl font-bold text-white">{{ 'find_vehicles' | translate }}</h1>
+      <p class="text-green-100 mt-1 text-sm">{{ 'find_nearest_place' | translate }}</p>
+    </div>
   </div>
 
-  <!-- Contenido principal sin restricciones de ancho -->
-  <div class="relative z-10 px-4 sm:px-6 lg:px-28 py-10">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
 
-    <!-- Título -->
-    <div class="mb-4">
-      <h1 class="text-3xl sm:text-4xl font-bold text-customGreen">{{ 'find_vehicles' | translate }}</h1>
+    <!-- Stats bar -->
+    <div class="flex items-center gap-3 mb-6">
+      <span class="inline-flex items-center gap-1.5 bg-white border border-gray-200 text-gray-600 text-sm px-3 py-1.5 rounded-full shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
+        {{ markers.length }} vehículos disponibles
+      </span>
+      <span *ngIf="display" class="text-xs text-gray-400 font-mono">
+        {{ display.lat | number:'1.4-4' }}, {{ display.lng | number:'1.4-4' }}
+      </span>
     </div>
 
-    <!-- Subtítulo -->
-    <div class="mb-6">
-      <p class="text-gray-700">{{ 'find_nearest_place' | translate }}</p>
-    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-    <!-- Mapa a ancho completo -->
-    <!-- Contenedor del mapa sticky -->
-    <div class="w-full lg:max-w-4xl sticky top-24 mx-auto rounded-xl overflow-hidden ">
-      <google-map
-        class="w-full h-[300px] sm:h-[400px] lg:h-[500px]"
-        [center]="center"
-        [zoom]="zoom"
-        (mapClick)="moveMap($event)"
-        (mapMousemove)="move($event)">
-        <map-marker
-          *ngFor="let marker of markers"
-          [position]="marker.position"
-          (mapClick)="markerClick(marker.vehicleId)">
-        </map-marker>
-      </google-map>
-    </div>
+      <!-- Mapa -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <google-map
+            class="w-full h-[420px] sm:h-[520px] block"
+            [center]="center"
+            [zoom]="zoom"
+            (mapClick)="moveMap($event)"
+            (mapMousemove)="move($event)">
+            <map-marker
+              *ngFor="let marker of markers"
+              [position]="marker.position"
+              [options]="markerOptions"
+              (mapClick)="markerClick(marker.vehicleId)">
+            </map-marker>
+          </google-map>
+        </div>
+        <p class="text-xs text-gray-400 mt-2 text-center">
+          Haz clic en un marcador para ver el vehículo · Desplázate para hacer zoom
+        </p>
+      </div>
 
+      <!-- Panel lateral con lista de vehículos -->
+      <div class="flex flex-col gap-3 max-h-[560px] overflow-y-auto pr-1">
+
+        <p *ngIf="loading" class="text-center py-10 text-gray-400 text-sm">Cargando vehículos…</p>
+
+        <div *ngIf="!loading && vehicleData.length === 0"
+             class="text-center py-10 text-gray-400 text-sm">
+          No hay vehículos registrados aún.
+        </div>
+
+        <div *ngFor="let v of vehicleData"
+             class="bg-white rounded-xl border border-gray-100 shadow-sm p-4 cursor-pointer hover:border-green-400 hover:shadow-md transition-all"
+             (click)="markerClick(v.id)">
+
+          <div class="flex gap-3 items-start">
+            <img [src]="v.imageUrl || 'assets/vehicle-placeholder.svg'"
+                 (error)="$any($event.target).src='assets/vehicle-placeholder.svg'"
+                 class="w-16 h-16 rounded-lg object-cover bg-gray-100 flex-shrink-0"
+                 alt="Vehículo" />
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-gray-800 text-sm truncate">{{ v.type }}</p>
+              <p class="text-xs text-gray-500 truncate">{{ v.name }}</p>
+              <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+                <span *ngIf="v.priceRent" class="text-xs text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded-full">
+                  S/{{ v.priceRent }}/día
+                </span>
+                <span *ngIf="v.priceSell" class="text-xs text-blue-600 font-medium bg-blue-50 px-2 py-0.5 rounded-full">
+                  S/{{ v.priceSell }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
   </div>
 </section>
