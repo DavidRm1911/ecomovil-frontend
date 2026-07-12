@@ -58,12 +58,8 @@ export class VehicleDetailsComponent implements OnInit, OnDestroy {
     return param ? +param : 1;
   }
 
-  randomRating() {
-    this.value = Math.floor(Math.random() * 6);
-  }
-
   ngOnInit(): void {
-    this.randomRating();
+    this.value = 0;
     this.loadReservations();
     this.loadTrail();
     this.telemetryService.clearAlerts();

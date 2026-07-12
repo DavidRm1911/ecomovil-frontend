@@ -98,11 +98,12 @@ export class VehiclePostComponent implements OnInit {
           }
         });
       } else {
-        this.newVehicle.imageUrl = 'https://ecomovil-vehicle-images.s3.amazonaws.com/vehicles/default.jpg';
+        this.newVehicle.imageUrl = '';
         this.createVehicle();
       }
-    }).catch((error) => {
-      console.error('Error al obtener la ubicación: ', error);
+    }).catch(() => {
+      this.uploading = false;
+      this.imageUploadError = 'Permiso de ubicación denegado. Activa la geolocalización e intenta de nuevo.';
     });
   }
 
@@ -119,6 +120,7 @@ export class VehiclePostComponent implements OnInit {
       error: (err) => {
         console.error('Error creando el vehículo:', err);
         this.uploading = false;
+        this.imageUploadError = 'Error al publicar el vehículo. Intenta de nuevo.';
       }
     });
   }
